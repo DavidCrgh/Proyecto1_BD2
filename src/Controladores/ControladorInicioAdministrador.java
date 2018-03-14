@@ -67,6 +67,9 @@ public class ControladorInicioAdministrador implements Initializable{
     public TextArea direccionModificar;
 
     @FXML
+    public Button modificarUsuario;
+
+    @FXML
     public Spinner porcentajeMejora;
 
     @FXML

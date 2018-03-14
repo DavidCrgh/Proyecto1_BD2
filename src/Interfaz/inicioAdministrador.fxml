@@ -17,7 +17,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="551.0" prefWidth="1026.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Interfaz.InicioAdministrador">
+<AnchorPane prefHeight="551.0" prefWidth="1026.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.ControladorInicioAdministrador">
    <children>
       <BorderPane layoutY="-1.0" prefHeight="551.0" prefWidth="1026.0">
          <top>
@@ -34,7 +34,7 @@
                               <HBox layoutX="535.0" layoutY="57.0" spacing="10.0">
                                  <children>
                                     <Label alignment="CENTER" text="Alias:" textAlignment="CENTER" />
-                                    <ComboBox prefHeight="25.0" prefWidth="197.0" />
+                                    <ComboBox fx:id="aliasModificar" prefHeight="25.0" prefWidth="197.0" />
                                  </children>
                               </HBox>
                               <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Registro de Usuario">
@@ -50,20 +50,20 @@
                               <VBox layoutX="535.0" layoutY="93.0">
                                  <children>
                                     <Label text="Cedula:" />
-                                    <TextField prefHeight="25.0" prefWidth="182.0" />
+                                    <TextField fx:id="cedulaModificar" prefHeight="25.0" prefWidth="182.0" />
                                  </children>
                               </VBox>
                               <VBox layoutX="738.0" layoutY="93.0">
                                  <children>
                                     <Label text="Nombre y Apellidos" />
-                                    <TextField prefHeight="25.0" prefWidth="228.0" />
+                                    <TextField fx:id="nombreApellidosModificar" prefHeight="25.0" prefWidth="228.0" />
                                  </children>
                               </VBox>
                               <VBox layoutX="14.0" layoutY="223.0" />
                               <VBox layoutX="535.0" layoutY="261.0">
                                  <children>
                                     <Label text="Dirección" />
-                                    <TextArea prefHeight="156.0" prefWidth="470.0" />
+                                    <TextArea fx:id="direccionModificar" prefHeight="156.0" prefWidth="470.0" />
                                  </children>
                               </VBox>
                               <Text layoutX="535.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Teléfonos">
@@ -74,29 +74,29 @@
                               <HBox layoutX="535.0" layoutY="174.0" spacing="10.0">
                                  <children>
                                     <Label text="Nuevo Telefono:" />
-                                    <TextField prefHeight="25.0" prefWidth="180.0" />
-                                    <Button mnemonicParsing="false" prefWidth="72.0" text="Agregar" />
+                                    <TextField fx:id="nuevoTelefonoModificar" prefHeight="25.0" prefWidth="180.0" />
+                                    <Button fx:id="agregarTelefonoModificar" mnemonicParsing="false" prefWidth="72.0" text="Agregar" />
                                  </children>
                               </HBox>
-                              <ComboBox layoutX="631.0" layoutY="211.0" prefHeight="25.0" prefWidth="180.0" />
+                              <ComboBox fx:id="telefonosModificar" layoutX="631.0" layoutY="211.0" prefHeight="25.0" prefWidth="180.0" />
                               <Label layoutX="535.0" layoutY="215.0" text="Telefonos:" />
-                              <Button layoutX="907.0" layoutY="211.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0" text="Eliminar" />
+                              <Button fx:id="eliminarTelefonoUsuario" layoutX="907.0" layoutY="211.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0" text="Eliminar" />
                               <HBox layoutX="14.0" layoutY="57.0" spacing="10.0">
                                  <children>
                                     <Label alignment="CENTER" text="Alias:" textAlignment="CENTER" />
-                                    <TextField prefHeight="25.0" prefWidth="199.0" />
+                                    <TextField fx:id="aliasRegistro" prefHeight="25.0" prefWidth="199.0" />
                                  </children>
                               </HBox>
                               <VBox layoutX="14.0" layoutY="93.0">
                                  <children>
                                     <Label text="Cedula:" />
-                                    <TextField prefHeight="25.0" prefWidth="182.0" />
+                                    <TextField fx:id="cedulaRegistro" prefHeight="25.0" prefWidth="182.0" />
                                  </children>
                               </VBox>
                               <VBox layoutX="217.0" layoutY="93.0">
                                  <children>
                                     <Label text="Nombre y Apellidos" />
-                                    <TextField prefHeight="25.0" prefWidth="228.0" />
+                                    <TextField fx:id="nombreApellidosRegistro" prefHeight="25.0" prefWidth="228.0" />
                                  </children>
                               </VBox>
                               <Text layoutX="14.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Teléfonos">
@@ -107,18 +107,18 @@
                               <HBox layoutX="14.0" layoutY="174.0" spacing="10.0">
                                  <children>
                                     <Label text="Nuevo Telefono:" />
-                                    <TextField prefHeight="25.0" prefWidth="180.0" />
-                                    <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0" text="Agregar" />
+                                    <TextField fx:id="nuevoTelefonoRegistro" prefHeight="25.0" prefWidth="180.0" />
+                                    <Button fx:id="agregarTelefonoRegistro" mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0" text="Agregar" />
                                  </children>
                               </HBox>
-                              <ComboBox layoutX="110.0" layoutY="211.0" prefHeight="25.0" prefWidth="180.0" />
+                              <ComboBox fx:id="telefonosRegistro" layoutX="110.0" layoutY="211.0" prefHeight="25.0" prefWidth="180.0" />
                               <Label layoutX="14.0" layoutY="215.0" text="Telefonos:" />
-                              <Button layoutX="302.0" layoutY="211.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0" text="Eliminar" />
+                              <Button fx:id="eliminarTelefonoRegistro" layoutX="302.0" layoutY="211.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0" text="Eliminar" />
                               <Label layoutX="14.0" layoutY="261.0" text="Dirección" />
-                              <TextArea layoutX="14.0" layoutY="278.0" prefHeight="156.0" prefWidth="470.0" />
-                              <Button layoutX="823.0" layoutY="211.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0" text="Modificar" />
-                              <Button layoutX="422.0" layoutY="449.0" mnemonicParsing="false" text="Registrar" />
-                              <Button layoutX="952.0" layoutY="449.0" mnemonicParsing="false" text="Aplicar" />
+                              <TextArea fx:id="direccionRegistro" layoutX="14.0" layoutY="278.0" prefHeight="156.0" prefWidth="470.0" />
+                              <Button fx:id="modificarTelefonoUsuario" layoutX="823.0" layoutY="211.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0" text="Modificar" />
+                              <Button fx:id="registrarUsuario" layoutX="422.0" layoutY="449.0" mnemonicParsing="false" text="Registrar" />
+                              <Button fx:id="modificarUsuario" layoutX="952.0" layoutY="449.0" mnemonicParsing="false" text="Aplicar" />
                            </children>
                         </AnchorPane>
                   </content>
@@ -134,7 +134,7 @@
                                           <Font size="36.0" />
                                        </font>
                                     </Text>
-                                    <Spinner prefHeight="45.0" prefWidth="343.0" />
+                                    <Spinner fx:id="porcentajeMejora" prefHeight="45.0" prefWidth="343.0" />
                                  </children>
                               </VBox>
                               <VBox layoutX="342.0" layoutY="287.0">
@@ -144,7 +144,7 @@
                                           <Font size="36.0" />
                                        </font>
                                     </Text>
-                                    <Spinner prefHeight="45.0" prefWidth="343.0" />
+                                    <Spinner fx:id="incrementoMinimo" prefHeight="45.0" prefWidth="343.0" />
                                  </children>
                               </VBox>
                               <Text layoutX="307.0" layoutY="381.0" strokeType="OUTSIDE" strokeWidth="0.0" text="₡" wrappingWidth="24.796875">
