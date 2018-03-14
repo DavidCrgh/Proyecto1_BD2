@@ -16,7 +16,7 @@ import java.util.ResourceBundle;
 /**
  * Created by Javier on 3/13/2018.
  */
-public class ControladorVentanaLogin implements Initializable {
+public class ControladorLogin implements Initializable {
 
     @FXML
     public Button loguearAdministrador;

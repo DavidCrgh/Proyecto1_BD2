@@ -45,7 +45,6 @@ public class GestorBD {
 
     public Statement getEstado() {
         return estado;
-
     }
 
     public void cerrarConexion() {
