@@ -47,7 +47,7 @@ public class ControladorLogin implements Initializable {
             String usuarioAdmi = usuarioAdministrador.getText();
             String contraAdmin = contraseñaAdministrador.getText();
 
-            loguearEntidad(usuarioAdmi,contraAdmin,"Administrador",100,100);
+            loguearEntidad(usuarioAdmi,contraAdmin,"Administrador",551,1026);
 
         });
 
@@ -99,9 +99,12 @@ public class ControladorLogin implements Initializable {
         switch (entidad) {
 
             case "Administrador":
+                ControladorAdministrador controladorAdministrador = loader.getController();
+                controladorAdministrador.gestorAdministrador = gestorBase;// Este gestor base ya vendria con la conexion asociada a un usuario, se pasa el gestor para que del otro lado se pueda hacer el llamado a las funciones de la base y asi.
                 break;
-            case "Participante":
-
+            case "Participante"://TODO: La interfaz del participante y su controlador asociado.
+               // ControladorInicioParticipante controladorParticipante = loader.getController();
+              //  controladorParticipante.gestorParticipante = gestorBase;
                 break;
         }
 

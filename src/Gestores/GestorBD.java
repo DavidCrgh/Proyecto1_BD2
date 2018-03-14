@@ -6,6 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
+import oracle.sql.ARRAY;
+import oracle.sql.ArrayDescriptor;
 
 import java.io.IOException;
 import java.sql.*;
@@ -29,7 +31,7 @@ public class GestorBD {
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
             String connectionUrl = "jdbc:oracle:thin:@localhost:1521:orcl";
-            conexion = DriverManager.getConnection(connectionUrl,"sys as sysdba","oracleBases21698");
+            conexion = DriverManager.getConnection(connectionUrl,"C##PRINCIPALSCHEMA","oracleBases21698");
             estado = conexion.createStatement();
 
         } catch (ClassNotFoundException ex) {
@@ -130,5 +132,43 @@ public class GestorBD {
         nuevaAlerta.showAndWait();
 
     }
+
+    public void agregarNuevoUsuario(String usuario, String contrasenna, String cedula, String nombreApellidos, String direccion,ArrayList<String> telefonos,String tipoUsuario){
+        String [] telefonosUsuario = new String[telefonos.size()];
+        telefonosUsuario = telefonos.toArray(telefonosUsuario);
+
+
+        String procedimientoAlmacenado = "";
+
+        switch(tipoUsuario){
+            case "Administrador":
+                procedimientoAlmacenado = "{call C##PRINCIPALSCHEMA.crearUsuarioAdministrador (?,?,?,?,?,?)}";
+                break;
+            case "Participante":
+                procedimientoAlmacenado = "{call crearUsuarioParticipante (?,?,?,?,?,?)}";
+                break;
+        }
+
+       try{
+            ArrayDescriptor arrDesc = ArrayDescriptor.createDescriptor("C##PRINCIPALSCHEMA.LISTATELEFONOS",conexion);
+            Array arregloTelefonos = new ARRAY(arrDesc,conexion,telefonosUsuario);
+
+
+            CallableStatement agregarUsuario = conexion.prepareCall(procedimientoAlmacenado);
+            agregarUsuario.setString(1,usuario);
+            agregarUsuario.setString(2,contrasenna);
+            agregarUsuario.setString(3,cedula);
+            agregarUsuario.setString(4,nombreApellidos);
+            agregarUsuario.setString(5,direccion);
+            agregarUsuario.setArray(6,arregloTelefonos);
+
+            agregarUsuario.executeUpdate();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+
+
+    }
+
 
 }
