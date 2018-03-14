@@ -18,24 +18,6 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("../Interfaz/sample.fxml"));
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 300, 275));
-        GestorBD gestorBase = new GestorBD();
-        gestorBase.establecerConexionSuperUsuario();
-
-        try{
-            String sql = "SELECT DESCRIPCION FROM SYS.CATEGORIA";
-            PreparedStatement prueba = gestorBase.getConexion().prepareStatement(sql);
-            ResultSet tuples = prueba.executeQuery();
-
-            while(tuples.next()){
-                System.out.println(tuples.getString("DESCRIPCION"));
-            }
-
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-
-
-
         primaryStage.show();
     }
 
