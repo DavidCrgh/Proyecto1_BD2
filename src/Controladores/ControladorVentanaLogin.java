@@ -6,9 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -32,6 +30,12 @@ public class ControladorVentanaLogin implements Initializable {
     public PasswordField contraseñaAdministrador;
     @FXML
     public PasswordField contraseñaParticipante;
+    @FXML
+    public RadioButton rboton_Oracle;
+    @FXML
+    public RadioButton rboton_PostgreSQL;
+    @FXML
+    public ToggleGroup grupoBotonesBD;
 
     public GestorBD gestorBase = new GestorBD();
 
@@ -53,6 +57,7 @@ public class ControladorVentanaLogin implements Initializable {
 
             loguearEntidad(usuarioParti,contraParti,"Participante",100,100);
         });
+
     }
 
 
