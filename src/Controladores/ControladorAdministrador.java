@@ -87,11 +87,15 @@ public class ControladorAdministrador implements Initializable{
     @FXML
     public Button variablesSistema;
 
+    @FXML
+    public Button actualizarModificarUsuario;
+
     GestorBD gestorAdministrador;
 
     ArrayList<String> listaTemporalTelefonos = new ArrayList<>();
 
     public void initialize(URL fxmlLocations, ResourceBundle resources){
+
 
         datosDefecto();
 
@@ -131,8 +135,30 @@ public class ControladorAdministrador implements Initializable{
                 listaTemporalTelefonos.remove(telefonosRegistro.getSelectionModel().getSelectedItem().toString());
             }
         });
+
         telefonosRegistro.setOnMouseClicked(event->{
             telefonosRegistro.setItems(FXCollections.observableArrayList(listaTemporalTelefonos));
+        });
+
+        modificarUsuario.setOnAction(event -> {
+            if(aliasModificar.getSelectionModel().getSelectedItem() == null || cedulaModificar.getText().equals("") ||
+                    nombreApellidosModificar.getText().equals("") || direccionModificar.getText().equals(""))
+                invocarAlerta("Se deben ingresar todos los datos del usuario a modificar");
+            else{
+
+                String aliasUsuario = aliasModificar.getSelectionModel().getSelectedItem().toString();
+                String nuevaCedula = cedulaModificar.getText();
+                String nuevoNombreApellidos = nombreApellidosModificar.getText();
+                String nuevaDireccion = direccionModificar.getText();
+
+                gestorAdministrador.modificarUsuario(aliasUsuario,nuevaCedula,nuevoNombreApellidos,nuevaDireccion);
+            }
+        });
+
+        actualizarModificarUsuario.setOnAction(event -> {
+
+            ArrayList<String> aliasUsuarios = gestorAdministrador.devolverUsuarios(0);
+            ArrayList<String> telefonosUsuarios = gestorAdministrador.devolverUsuarios(1);
         });
     }
 

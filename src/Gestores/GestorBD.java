@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
+import oracle.jdbc.OracleTypes;
 import oracle.sql.ARRAY;
 import oracle.sql.ArrayDescriptor;
 
@@ -170,5 +171,39 @@ public class GestorBD {
 
     }
 
+    public void modificarUsuario(String alias,String nuevaCedula, String nuevoNombreApellidos, String nuevaDireccion){
+        try{
+            CallableStatement modificacionUsuario = conexion.prepareCall("{call C##PRINCIPALSCHEMA.modificarUsuario(?,?,?,?)}");
+            modificacionUsuario.setString(1,alias);
+            modificacionUsuario.setString(2,nuevaCedula);
+            modificacionUsuario.setString(3,nuevoNombreApellidos);
+            modificacionUsuario.setString(4,nuevaDireccion);
 
+            modificacionUsuario.executeUpdate();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public ArrayList<String> devolverUsuarios(int atributo){
+        ArrayList<String> aliasTelefonosUsuarios = new ArrayList<>();
+        try{
+            String sqlUsuarios = "{call C##PRINCIPALSCHEMA.retornarUsuarios(?)}";
+            CallableStatement retornarUsuarios = conexion.prepareCall(sqlUsuarios);
+
+            retornarUsuarios.setInt(1,atributo);
+            retornarUsuarios.registerOutParameter(2, OracleTypes.CURSOR);
+
+            retornarUsuarios.executeUpdate();
+            ResultSet aliasTelefonosDevueltos = (ResultSet)retornarUsuarios.getObject(1);
+
+            while(aliasTelefonosDevueltos.next()){
+                aliasTelefonosUsuarios.add(aliasTelefonosDevueltos.getString("ALIAS"));
+            }
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return aliasTelefonosUsuarios;
+    }
 }

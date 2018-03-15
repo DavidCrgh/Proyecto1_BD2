@@ -119,7 +119,7 @@
                               <TextArea fx:id="direccionRegistro" layoutX="14.0" layoutY="278.0" prefHeight="156.0" prefWidth="470.0" />
                               <Button fx:id="modificarTelefonoUsuario" layoutX="823.0" layoutY="211.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0" text="Modificar" />
                               <Button fx:id="registrarUsuario" layoutX="21.0" layoutY="446.0" mnemonicParsing="false" text="Registrar" />
-                              <Button fx:id="modificarUsuario" layoutX="952.0" layoutY="449.0" mnemonicParsing="false" text="Aplicar" />
+                              <Button fx:id="modificarUsuario" layoutX="536.0" layoutY="446.0" mnemonicParsing="false" text="Aplicar" />
                               <HBox layoutX="262.0" layoutY="57.0" spacing="10.0">
                                  <children>
                                     <Label alignment="CENTER" text="Contraseña" textAlignment="CENTER" />
@@ -128,6 +128,7 @@
                               </HBox>
                               <ComboBox fx:id="tipoUsuario" layoutX="338.0" layoutY="446.0" prefWidth="150.0" />
                               <Label layoutX="302.0" layoutY="450.0" text="Tipo:" />
+                              <Button fx:id="actualizarModificarUsuario" layoutX="917.0" layoutY="446.0" mnemonicParsing="false" text="Actualizar" />
                            </children>
                         </AnchorPane>
                   </content>
