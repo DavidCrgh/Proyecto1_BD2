@@ -145,7 +145,7 @@ public class GestorBD {
                 procedimientoAlmacenado = "{call C##PRINCIPALSCHEMA.crearUsuarioAdministrador (?,?,?,?,?,?)}";
                 break;
             case "Participante":
-                procedimientoAlmacenado = "{call crearUsuarioParticipante (?,?,?,?,?,?)}";
+                procedimientoAlmacenado = "{call C##PRINCIPALSCHEMA.crearUsuarioParticipante (?,?,?,?,?,?)}";
                 break;
         }
 
