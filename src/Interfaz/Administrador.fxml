@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
@@ -144,7 +143,11 @@
                                           <Font size="36.0" />
                                        </font>
                                     </Text>
-                                    <Spinner fx:id="porcentajeMejora" prefHeight="45.0" prefWidth="343.0" />
+                                    <TextField fx:id="porcentajeMejora" prefHeight="48.0" prefWidth="338.0">
+                                       <font>
+                                          <Font size="25.0" />
+                                       </font>
+                                    </TextField>
                                  </children>
                               </VBox>
                               <VBox layoutX="342.0" layoutY="287.0">
@@ -154,7 +157,11 @@
                                           <Font size="36.0" />
                                        </font>
                                     </Text>
-                                    <Spinner fx:id="incrementoMinimo" prefHeight="45.0" prefWidth="343.0" />
+                                    <TextField fx:id="incrementoMinimo" prefHeight="48.0" prefWidth="314.0">
+                                       <font>
+                                          <Font size="25.0" />
+                                       </font>
+                                    </TextField>
                                  </children>
                               </VBox>
                               <Text layoutX="307.0" layoutY="381.0" strokeType="OUTSIDE" strokeWidth="0.0" text="₡" wrappingWidth="24.796875">

@@ -6,11 +6,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
+import jdk.nashorn.internal.codegen.CompilerConstants;
 import oracle.jdbc.OracleTypes;
+import oracle.jdbc.driver.OracleSQLException;
 import oracle.sql.ARRAY;
 import oracle.sql.ArrayDescriptor;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -165,6 +168,7 @@ public class GestorBD {
 
             agregarUsuario.executeUpdate();
         }catch(SQLException e){
+            invocarAlerta("El usuario o cedula seleccionados ya han sido elegidos. Intente de nuevo.");
             e.printStackTrace();
         }
 
@@ -181,24 +185,44 @@ public class GestorBD {
 
             modificacionUsuario.executeUpdate();
         }catch(SQLException e){
+            invocarAlerta("La nueva cedula ya existe. Intente de nuevo.");
             e.printStackTrace();
         }
     }
 
-    public ArrayList<String> devolverUsuarios(int atributo){
+    public ArrayList<String> devolverUsuarios(String alias,int atributo){
         ArrayList<String> aliasTelefonosUsuarios = new ArrayList<>();
         try{
-            String sqlUsuarios = "{call C##PRINCIPALSCHEMA.retornarUsuarios(?)}";
+            String sqlUsuarios = "{call C##PRINCIPALSCHEMA.retornarUsuarios(?,?,?)}";
             CallableStatement retornarUsuarios = conexion.prepareCall(sqlUsuarios);
 
-            retornarUsuarios.setInt(1,atributo);
-            retornarUsuarios.registerOutParameter(2, OracleTypes.CURSOR);
+            retornarUsuarios.setString(1,alias);
+            retornarUsuarios.setInt(2,atributo);
+            retornarUsuarios.registerOutParameter(3, OracleTypes.CURSOR);
 
             retornarUsuarios.executeUpdate();
-            ResultSet aliasTelefonosDevueltos = (ResultSet)retornarUsuarios.getObject(1);
+            ResultSet aliasTelefonosDevueltos = (ResultSet)retornarUsuarios.getObject(3);
 
-            while(aliasTelefonosDevueltos.next()){
-                aliasTelefonosUsuarios.add(aliasTelefonosDevueltos.getString("ALIAS"));
+            switch(atributo){
+                case 0: // Devuelve todos los alias
+                    while (aliasTelefonosDevueltos.next()) {
+                            aliasTelefonosUsuarios.add(aliasTelefonosDevueltos.getString("ALIAS"));
+                    }
+                    break;
+
+                case 1: //Devuelve todos los telefonos
+                    while (aliasTelefonosDevueltos.next()) {
+                        aliasTelefonosUsuarios.add(aliasTelefonosDevueltos.getString("TELEFONO"));
+                    }
+                    break;
+
+                default: //Devuelve una lista de toda la info de un solo usuario
+                    while (aliasTelefonosDevueltos.next()) {
+                        aliasTelefonosUsuarios.add(aliasTelefonosDevueltos.getString("CEDULA"));
+                        aliasTelefonosUsuarios.add(aliasTelefonosDevueltos.getString("NOMBRE_APELLIDOS"));
+                        aliasTelefonosUsuarios.add(aliasTelefonosDevueltos.getString("DIRECCION"));
+                    }
+
             }
 
         }catch(SQLException e){
@@ -206,4 +230,70 @@ public class GestorBD {
         }
         return aliasTelefonosUsuarios;
     }
+
+    public void eliminarTelefonoUsuario(String aliasUsuario, String telefonoEliminar){
+        String procTelefono = "{call C##PRINCIPALSCHEMA.eliminarTelefonoUsuario(?,?)}";
+
+        try{
+            CallableStatement eliminarTelefono = conexion.prepareCall(procTelefono);
+            eliminarTelefono.setString(1,aliasUsuario);
+            eliminarTelefono.setString(2,telefonoEliminar);
+
+            eliminarTelefono.executeUpdate();
+
+
+        }catch(SQLException e){
+            e.printStackTrace();
+
+        }
+    }
+
+    public void modificarTelefonoUsuario(String alias, String numeroTelefonoNuevo, String numeroTelefonoViejo){
+        String procModificarTelefono = "{call C##PRINCIPALSCHEMA.modificarTelefonoUsuario(?,?,?)}";
+
+        try{
+            CallableStatement modificarTelefono = conexion.prepareCall(procModificarTelefono);
+            modificarTelefono.setString(1,alias);
+            modificarTelefono.setString(2,numeroTelefonoNuevo);
+            modificarTelefono.setString(3,numeroTelefonoViejo);
+
+            modificarTelefono.executeUpdate();
+        }catch(SQLException e){
+            invocarAlerta("El nuevo telefono ya existe en la base de datos. Intente de nuevo.");
+            e.printStackTrace();
+        }
+    }
+
+    public void agregarNuevoTelefonoUsuario(String aliasUsuario,String nuevoTelefono){
+        String procNuevoTelefono = "{call C##PRINCIPALSCHEMA.agregarNuevoTelefonoUsuario(?,?)}";
+        try{
+            CallableStatement agregarTelefono = conexion.prepareCall(procNuevoTelefono);
+            agregarTelefono.setString(1,aliasUsuario);
+            agregarTelefono.setString(2,nuevoTelefono);
+
+            agregarTelefono.executeUpdate();
+
+
+        }catch(SQLException e){
+            invocarAlerta("El telefono ingresadoya existe en la base de datos. Intente de nuevo.");
+            e.printStackTrace();
+        }
+    }
+
+    public void agregarNuevasVariables(String aliasAdministrador, BigDecimal porcentajeMejora, BigDecimal incrementoMinimo){
+
+        String procedimientoVaribles = "{call C##PRINCIPALSCHEMA.agregarNuevasVariables(?,?,?)}";
+
+        try{
+            CallableStatement agregarVariables = conexion.prepareCall(procedimientoVaribles);
+            agregarVariables.setString(1,aliasAdministrador);
+            agregarVariables.setBigDecimal(2,incrementoMinimo);
+            agregarVariables.setBigDecimal(3,porcentajeMejora);
+
+            agregarVariables.executeUpdate();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+
 }
