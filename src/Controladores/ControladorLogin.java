@@ -47,7 +47,7 @@ public class ControladorLogin implements Initializable {
             String usuarioAdmi = usuarioAdministrador.getText();
             String contraAdmin = contraseñaAdministrador.getText();
 
-            loguearEntidad(usuarioAdmi,contraAdmin,"Administrador",551,1026);
+            loguearEntidad(usuarioAdmi,contraAdmin,"Administrador",1026,551);
 
         });
 
@@ -104,9 +104,10 @@ public class ControladorLogin implements Initializable {
                 controladorAdministrador.administradorLogueado = usuarioAdministrador.getText(); // Para tener guardado el alias en la clase del controlador
                 break;
             case "Participante"://TODO: La interfaz del participante y su controlador asociado.
-               // ControladorInicioParticipante controladorParticipante = loader.getController();
-              //  controladorParticipante.gestorParticipante = gestorBase;
-                // controladorParticipante.participanteLogueado = usuarioParticipante.getText();
+                ControladorParticipante controladorParticipante = loader.getController();
+                controladorParticipante.gestorParticipante = gestorBase;
+                controladorParticipante.participanteLogueado = usuarioParticipante.getText();
+                controladorParticipante.datosDefecto(); //Puede dar nulo si se pone en el initialize
                 break;
         }
 

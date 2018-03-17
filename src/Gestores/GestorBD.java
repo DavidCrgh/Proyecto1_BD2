@@ -1,19 +1,22 @@
 package Gestores;
 
 
+import com.opencsv.CSVReader;
+import com.sun.org.apache.regexp.internal.RE;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
-import jdk.nashorn.internal.codegen.CompilerConstants;
+
 import oracle.jdbc.OracleTypes;
 import oracle.jdbc.driver.OracleSQLException;
 import oracle.sql.ARRAY;
 import oracle.sql.ArrayDescriptor;
-
-import java.io.IOException;
+import java.io.*;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -296,4 +299,188 @@ public class GestorBD {
         }
     }
 
+    public void crearSubasta(String aliasVendedor, Date tiempoInicio, Date tiempoFin, String descripcionItem,String nombreImagen, BigDecimal precioBase,
+
+    String detallesEntrega, int idSubcategoria){ // El id del item se obtiene en el stored procedure
+        establecerConexionSuperUsuario();
+        String subastaSQL = "{call crearSubasta(?,?,?,?,?,?,?,?)}"; //INSERT INTO ITEM(DESCRIPCION,FOTO,PRECIO_BASE,DETALLESENTREGA,IDSUBCATEGORIA) VALUES(?,?,?,?,?);
+        try {
+            FileInputStream imagen = new FileInputStream("Imagenes/"+nombreImagen);
+
+            CallableStatement nuevaSubasta = conexion.prepareCall(subastaSQL);
+
+            nuevaSubasta.setString(1,aliasVendedor);
+            nuevaSubasta.setDate(2, tiempoInicio);
+            nuevaSubasta.setDate(3,tiempoFin);
+            nuevaSubasta.setString(4,descripcionItem);
+            nuevaSubasta.setBinaryStream(5,imagen,imagen.available());
+
+            nuevaSubasta.setBigDecimal(6,precioBase);
+            nuevaSubasta.setString(7,detallesEntrega);
+            nuevaSubasta.setInt(8,idSubcategoria);
+
+            nuevaSubasta.executeUpdate();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public ArrayList<String> getCategorias(){ //Con la modalidad devuelvo la categoria o subcategorias asciadas
+        ArrayList<String> categorias = new ArrayList<>();
+        String sqlCategorias = "{call C##PRINCIPALSCHEMA.obtenerCategorias(?)}";
+
+        try{
+            CallableStatement ejecutarCat = conexion.prepareCall(sqlCategorias);
+            ejecutarCat.registerOutParameter(1,OracleTypes.CURSOR);
+
+            ejecutarCat.executeUpdate();
+
+            ResultSet catObtenidas = (ResultSet) ejecutarCat.getObject(1);
+            while(catObtenidas.next()){
+
+                    categorias.add(catObtenidas.getString("ID")+"-"+catObtenidas.getString("DESCRIPCION"));
+            }
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return categorias;
+    }
+
+    public ArrayList<String> filtrarSubCategorias(int idCategoria){
+        ArrayList<String> subCategorias = new ArrayList<String>();
+        String sqlFiltro = "{call C##PRINCIPALSCHEMA.filtrarSubCategorias(?,?)}";
+        try{
+            CallableStatement filtrar = conexion.prepareCall(sqlFiltro);
+            filtrar.setInt(1,idCategoria);
+            filtrar.registerOutParameter(2,OracleTypes.CURSOR);
+            filtrar.executeUpdate();
+
+            ResultSet subCategoriasObtenidas = (ResultSet) filtrar.getObject(2);
+            while(subCategoriasObtenidas.next()){
+                subCategorias.add(subCategoriasObtenidas.getString("IDSUB")+"-"+subCategoriasObtenidas.getString("DESCRIPCION"));
+            }
+            subCategoriasObtenidas.close();
+            filtrar.close();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return subCategorias;
+    }
+
+    public void cargarImagen(){
+        establecerConexionSuperUsuario();
+        try{
+            PreparedStatement cargar = conexion.prepareStatement("SELECT * FROM ITEM");
+            ResultSet rs = cargar.executeQuery();
+
+            while(rs.next()){
+                Blob image = rs.getBlob("FOTO");
+                byte barr[]=image.getBytes(1,(int)image.length());
+                FileOutputStream fout = new FileOutputStream("Imagenes/caca.jpg");
+                fout.write(barr);
+                fout.close();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    } //FIXME
+
+   /* public void cargarCat() {
+        establecerConexionSuperUsuario();
+
+        String csvFile = "C:/Users/Javier/Desktop/categorias.csv";
+        BufferedReader reader = null;
+        String line = null;
+        String cvsSplitBy = ",";
+        String categoriaActual = "";
+        int idCategoria = 0;
+        int cont = 0;
+        try {
+            reader= new BufferedReader(new InputStreamReader(new FileInputStream(csvFile), "UTF-8"));
+                  //  br = new BufferedReader(new FileReader(csvFile, ));
+           // br.readLine();
+            reader.readLine();
+            while ((line = reader.readLine()) != null) {
+                if(!line.split(cvsSplitBy)[0].equals(""))
+                    System.out.println(line.split(cvsSplitBy)[0] + "    " +  line.split(cvsSplitBy)[1]);
+
+                if(cont ==1){
+                    categoriaActual= line.split(cvsSplitBy)[0]; //Agarra la primer categoria
+                    String sql = "INSERT INTO CATEGORIA(DESCRIPCION) VALUES(?)";
+                    String returnCols[] = { "ID" };
+                    PreparedStatement caca = conexion.prepareStatement(sql, returnCols);
+                    caca.setString(1,categoriaActual);
+                    caca.execute();
+                    ResultSet llave = caca.getGeneratedKeys();
+
+                    while(llave.next()){
+                        idCategoria = llave.getInt(1);
+                    }
+                    llave.close();
+                    caca.close();
+                    insertarSubcategoria(idCategoria, line.split(cvsSplitBy)[1]);
+                }
+
+                String[] country = line.split(cvsSplitBy);
+
+                if(!country[0].equals("") && cont!=1){
+                    if(categoriaActual.equals(country[0])){
+                       insertarSubcategoria(idCategoria,country[1]);
+                    }
+                    else{
+                        categoriaActual= line.split(cvsSplitBy)[0];
+                        String sql2 = "INSERT INTO CATEGORIA(DESCRIPCION) VALUES(?)";
+                        String returnCols[] = { "ID" };
+                        PreparedStatement caca2 = conexion.prepareStatement(sql2, returnCols);
+                        caca2.setString(1,categoriaActual);
+                        caca2.execute();
+                        ResultSet llave2 = caca2.getGeneratedKeys();
+
+                        while(llave2.next()){
+                            idCategoria = llave2.getInt(1);
+                        }
+                        llave2.close();
+                        caca2.close();
+                        insertarSubcategoria(idCategoria, line.split(cvsSplitBy)[1]);
+                    }
+
+                }
+
+                cont++;
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void  insertarSubcategoria(int idCategoria, String descripcionSub){
+        if(conexion==null)
+            establecerConexionSuperUsuario();
+        String s = "{call C##PRINCIPALSCHEMA.pruebaImagen(?,?)}";
+
+
+        try{
+            CallableStatement c = conexion.prepareCall(s);
+            c.setInt(1,idCategoria);
+            c.setString(2,descripcionSub);
+            c.executeUpdate();
+
+            c.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }*/
 }

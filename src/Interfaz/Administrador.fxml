@@ -136,27 +136,9 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <VBox layoutX="342.0" layoutY="91.0">
+                              <VBox layoutX="342.0" layoutY="91.0" />
+                              <VBox layoutX="342.0" layoutY="241.0">
                                  <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Porcentaje de mejora">
-                                       <font>
-                                          <Font size="36.0" />
-                                       </font>
-                                    </Text>
-                                    <TextField fx:id="porcentajeMejora" prefHeight="48.0" prefWidth="338.0">
-                                       <font>
-                                          <Font size="25.0" />
-                                       </font>
-                                    </TextField>
-                                 </children>
-                              </VBox>
-                              <VBox layoutX="342.0" layoutY="287.0">
-                                 <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Incremento Mínimo">
-                                       <font>
-                                          <Font size="36.0" />
-                                       </font>
-                                    </Text>
                                     <TextField fx:id="incrementoMinimo" prefHeight="48.0" prefWidth="314.0">
                                        <font>
                                           <Font size="25.0" />
@@ -164,16 +146,31 @@
                                     </TextField>
                                  </children>
                               </VBox>
-                              <Text layoutX="307.0" layoutY="381.0" strokeType="OUTSIDE" strokeWidth="0.0" text="₡" wrappingWidth="24.796875">
+                              <Text layoutX="307.0" layoutY="284.0" strokeType="OUTSIDE" strokeWidth="0.0" text="₡" wrappingWidth="24.796875">
                                  <font>
-                                    <Font size="46.0" />
+                                    <Font name="System Bold" size="46.0" />
                                  </font>
                               </Text>
-                              <Button fx:id="variablesSistema" layoutX="413.0" layoutY="408.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="200.0" text="Guardar">
+                              <Button fx:id="variablesSistema" layoutX="411.0" layoutY="342.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="200.0" text="Guardar">
                                  <font>
                                     <Font size="28.0" />
                                  </font>
                               </Button>
+                              <Text layoutX="342.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Porcentaje de mejora">
+                                 <font>
+                                    <Font size="36.0" />
+                                 </font>
+                              </Text>
+                              <TextField fx:id="porcentajeMejora" layoutX="342.0" layoutY="104.0" prefHeight="48.0" prefWidth="338.0">
+                                 <font>
+                                    <Font size="25.0" />
+                                 </font>
+                              </TextField>
+                              <Text layoutX="342.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Incremento Mínimo">
+                                 <font>
+                                    <Font size="36.0" />
+                                 </font>
+                              </Text>
                            </children>
                         </AnchorPane>
                     </content>
