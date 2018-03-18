@@ -388,27 +388,29 @@ public class GestorBD {
         }
     } //FIXME
 
-   /* public void cargarCat() {
+    public void cargarCat() {
         establecerConexionSuperUsuario();
 
         String csvFile = "C:/Users/Javier/Desktop/categorias.csv";
-        BufferedReader reader = null;
-        String line = null;
+  //      BufferedReader reader = null;
+        String [] line = null;
         String cvsSplitBy = ",";
         String categoriaActual = "";
         int idCategoria = 0;
+        CSVReader reader = null;
         int cont = 0;
         try {
-            reader= new BufferedReader(new InputStreamReader(new FileInputStream(csvFile), "UTF-8"));
+             reader = new CSVReader(new FileReader(csvFile), ',', '"');
+          //  reader= new BufferedReader(new InputStreamReader(new FileInputStream(csvFile), "UTF-8"));
                   //  br = new BufferedReader(new FileReader(csvFile, ));
            // br.readLine();
-            reader.readLine();
-            while ((line = reader.readLine()) != null) {
-                if(!line.split(cvsSplitBy)[0].equals(""))
-                    System.out.println(line.split(cvsSplitBy)[0] + "    " +  line.split(cvsSplitBy)[1]);
+            reader.readNext();
+            while ((line = reader.readNext()) != null) {
+                if(!line[0].equals(""))
+                    System.out.println(line[0] + "    " +  line[1]);
 
                 if(cont ==1){
-                    categoriaActual= line.split(cvsSplitBy)[0]; //Agarra la primer categoria
+                    categoriaActual= line[0]; //Agarra la primer categoria
                     String sql = "INSERT INTO CATEGORIA(DESCRIPCION) VALUES(?)";
                     String returnCols[] = { "ID" };
                     PreparedStatement caca = conexion.prepareStatement(sql, returnCols);
@@ -421,17 +423,17 @@ public class GestorBD {
                     }
                     llave.close();
                     caca.close();
-                    insertarSubcategoria(idCategoria, line.split(cvsSplitBy)[1]);
+                    insertarSubcategoria(idCategoria, line[1]);
                 }
 
-                String[] country = line.split(cvsSplitBy);
+                String[] country = line;
 
                 if(!country[0].equals("") && cont!=1){
                     if(categoriaActual.equals(country[0])){
                        insertarSubcategoria(idCategoria,country[1]);
                     }
                     else{
-                        categoriaActual= line.split(cvsSplitBy)[0];
+                        categoriaActual= line[0];
                         String sql2 = "INSERT INTO CATEGORIA(DESCRIPCION) VALUES(?)";
                         String returnCols[] = { "ID" };
                         PreparedStatement caca2 = conexion.prepareStatement(sql2, returnCols);
@@ -444,7 +446,7 @@ public class GestorBD {
                         }
                         llave2.close();
                         caca2.close();
-                        insertarSubcategoria(idCategoria, line.split(cvsSplitBy)[1]);
+                        insertarSubcategoria(idCategoria, line[1]);
                     }
 
                 }
@@ -482,5 +484,5 @@ public class GestorBD {
         }catch(Exception e){
             e.printStackTrace();
         }
-    }*/
+    }
 }
