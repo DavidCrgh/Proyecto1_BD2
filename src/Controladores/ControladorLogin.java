@@ -55,7 +55,7 @@ public class ControladorLogin implements Initializable {
             String usuarioParti = usuarioParticipante.getText();
             String contraParti = contraseñaParticipante.getText();
 
-            loguearEntidad(usuarioParti,contraParti,"Participante",100,100);
+            loguearEntidad(usuarioParti,contraParti,"Participante",605,556);
         });
 
     }

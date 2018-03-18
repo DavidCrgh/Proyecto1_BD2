@@ -299,15 +299,16 @@ public class GestorBD {
         }
     }
 
-    public void crearSubasta(String aliasVendedor, Date tiempoInicio, Date tiempoFin, String descripcionItem,String nombreImagen, BigDecimal precioBase,
+    public void crearSubasta(String aliasVendedor, Date tiempoInicio, Date tiempoFin, String descripcionItem,
+                             String nombreImagen, BigDecimal precioBase, String detallesEntrega, int idSubcategoria){ // El id del item se obtiene en el stored procedure
 
-    String detallesEntrega, int idSubcategoria){ // El id del item se obtiene en el stored procedure
         establecerConexionSuperUsuario();
         String subastaSQL = "{call crearSubasta(?,?,?,?,?,?,?,?)}"; //INSERT INTO ITEM(DESCRIPCION,FOTO,PRECIO_BASE,DETALLESENTREGA,IDSUBCATEGORIA) VALUES(?,?,?,?,?);
         try {
             FileInputStream imagen = new FileInputStream("Imagenes/"+nombreImagen);
 
             CallableStatement nuevaSubasta = conexion.prepareCall(subastaSQL);
+
 
             nuevaSubasta.setString(1,aliasVendedor);
             nuevaSubasta.setDate(2, tiempoInicio);
@@ -387,11 +388,11 @@ public class GestorBD {
             e.printStackTrace();
         }
     } //FIXME
-
+/*
     public void cargarCat() {
         establecerConexionSuperUsuario();
 
-        String csvFile = "C:/Users/Javier/Desktop/categorias.csv";
+        String csvFile = "C:/Users/User/Desktop/Proyecto1_BD2/categorias.csv";
   //      BufferedReader reader = null;
         String [] line = null;
         String cvsSplitBy = ",";
@@ -485,4 +486,5 @@ public class GestorBD {
             e.printStackTrace();
         }
     }
+    */
 }
