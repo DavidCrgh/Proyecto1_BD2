@@ -1,17 +1,23 @@
 package Controladores;
 
 import Gestores.GestorBD;
+import Modelo.Item;
 import Modelo.Subasta;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.text.DateFormat;
@@ -120,6 +126,7 @@ public class ControladorParticipante implements Initializable {
     String participanteLogueado;
 
     File imagenSeccionada = new File("Imagenes/defecto.jpg");
+
     public void  initialize(URL fxmlLocations, ResourceBundle resources){
 
         configurarColumnas();
@@ -204,8 +211,8 @@ public class ControladorParticipante implements Initializable {
             fileChooser.setTitle("Seleccionar Imagen");
             fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Imagenes JPG","*.jpg"));
             imagenSeccionada = fileChooser.showOpenDialog(cargarImagen.getScene().getWindow());
-            // TODO  cargar imagen en la interfaz
-            // imagenItem.setImage(new Image(...)); Buscar en internet :v
+            Image imagen = new Image(imagenSeccionada.toURI().toString());
+            imagenItem.setImage(imagen);
         });
 
         sinFiltro.setOnAction(event -> {
@@ -232,6 +239,12 @@ public class ControladorParticipante implements Initializable {
                 }
                 tablaPuja.setItems(FXCollections.observableArrayList(subastasPorCategoriaoSubCategoria));
             }
+        });
+
+        mostrarDetallesPuja.setOnAction(event -> {
+            Subasta subastaSeleccionada = (Subasta) tablaPuja.getSelectionModel().getSelectedItem();
+            Item informacionItem = gestorParticipante.extraerInformacionItem(subastaSeleccionada.getId());
+            abrirVentanaDetallesItem(informacionItem);
         });
 
 
@@ -276,6 +289,23 @@ public class ControladorParticipante implements Initializable {
         }
 
         return fechaSistemaReal;
+    }
+
+    public void abrirVentanaDetallesItem(Item infoItem){
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            Parent root = loader.load(getClass().getResource("../Interfaz/DetallesItem.fxml").openStream());
+            ControladorDetallesItem controladorItem = loader.getController();
+            controladorItem.itemActual = infoItem;
+            controladorItem.llenarInformacion();
+            Stage escenario = new Stage();
+            escenario.setTitle("Detalles Del Item");
+            escenario.setScene(new Scene(root,600,438));
+            escenario.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

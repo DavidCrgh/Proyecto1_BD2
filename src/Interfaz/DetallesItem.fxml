@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="438.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.ControladorDetallesItem">
+   <children>
+      <Label layoutX="221.0" layoutY="14.0" text="Detalles del Ítem">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="73.0" layoutY="75.0" prefHeight="20.0" prefWidth="22.0" text="Id:">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="idItem" layoutX="95.0" layoutY="75.0" prefHeight="20.0" prefWidth="55.0">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="imagenItem" fitHeight="190.0" fitWidth="200.0" layoutX="347.0" layoutY="105.0" pickOnBounds="true" preserveRatio="true" />
+      <Label layoutX="347.0" layoutY="65.0" prefHeight="20.0" prefWidth="55.0" text="Imagen">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Button fx:id="cerrarDetalles" layoutX="522.0" layoutY="388.0" mnemonicParsing="false" text="Cerrar">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+      <Label fx:id="idItem1" layoutX="73.0" layoutY="138.0" prefHeight="20.0" prefWidth="84.0" text="Descripción">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <TextArea fx:id="descripcionItem" layoutX="73.0" layoutY="169.0" prefHeight="91.0" prefWidth="200.0" />
+      <Label fx:id="idItem11" layoutX="73.0" layoutY="275.0" prefHeight="20.0" prefWidth="147.0" text="Detalles de la Entrega">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <TextArea fx:id="detallesEntregaItem" layoutX="73.0" layoutY="309.0" prefHeight="91.0" prefWidth="200.0" />
+      <Label fx:id="idItem111" layoutX="347.0" layoutY="309.0" prefHeight="20.0" prefWidth="84.0" text="Precio Base:">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="precioItem" layoutX="431.0" layoutY="309.0" prefHeight="20.0" prefWidth="159.0">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="idItem1111" layoutX="347.0" layoutY="335.0" prefHeight="20.0" prefWidth="43.0" text="Inicio:">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="inicioSubasta" layoutX="390.0" layoutY="335.0" prefHeight="20.0" prefWidth="159.0">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="idItem11111" layoutX="347.0" layoutY="368.0" prefHeight="20.0" prefWidth="43.0" text="Fin:">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="finSubasta" layoutX="390.0" layoutY="368.0" prefHeight="20.0" prefWidth="159.0">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

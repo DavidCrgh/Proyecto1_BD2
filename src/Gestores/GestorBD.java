@@ -1,6 +1,7 @@
 package Gestores;
 
 
+import Modelo.Item;
 import Modelo.Subasta;
 import com.opencsv.CSVReader;
 import com.sun.org.apache.regexp.internal.RE;
@@ -20,6 +21,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -462,23 +465,52 @@ public class GestorBD {
         return idItemDevuelto;
     }
 
-    public void cargarImagen(){
-        establecerConexionSuperUsuario();
+    public Item extraerInformacionItem(String idSubasta){
+        String sqlItem = "{call C##PRINCIPALSCHEMA.extraerItem(?,?)}";
+        Item itemEncontrado = null;
         try{
-            PreparedStatement cargar = conexion.prepareStatement("SELECT * FROM ITEM");
-            ResultSet rs = cargar.executeQuery();
+            CallableStatement buscarItem = conexion.prepareCall(sqlItem);
+            buscarItem.setInt(1,Integer.parseInt(idSubasta));
+            buscarItem.registerOutParameter(2,OracleTypes.CURSOR);
+            buscarItem.executeUpdate();
 
-            while(rs.next()){
-                Blob image = rs.getBlob("FOTO");
-                byte barr[]=image.getBytes(1,(int)image.length());
-                FileOutputStream fout = new FileOutputStream("Imagenes/caca.jpg");
+            ResultSet itemDevuelto = (ResultSet) buscarItem.getObject(2);
+
+            while(itemDevuelto.next()){
+                String  idItem = itemDevuelto.getString("IDITEM");
+                String descripcionItem = itemDevuelto.getString("DESCRIPCION");
+                String detallesEntrega = itemDevuelto.getString("DETALLESENTREGA");
+                String precioItem = String.valueOf(itemDevuelto.getBigDecimal("PRECIO_BASE"));
+                String tiempoInicio = fechaFormateada(itemDevuelto.getDate("TIEMPOINICIO"));
+                String tiempoFin = fechaFormateada(itemDevuelto.getDate("TIEMPOFIN"));
+                String nombreImagen = cargarImagen(itemDevuelto.getBlob("FOTO"),idItem);
+
+                itemEncontrado = new Item(idItem,descripcionItem,detallesEntrega,nombreImagen,precioItem,tiempoInicio,tiempoFin);
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return itemEncontrado;
+    }
+
+    public String fechaFormateada(Date fechaActual){
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return df.format(fechaActual);
+    }
+
+    public String cargarImagen(Blob imagenData,String idItem){
+        String nombre = "Imagenes/Item"+idItem+".jpg";
+        try{
+                byte barr[]=imagenData.getBytes(1,(int)imagenData.length());
+                FileOutputStream fout = new FileOutputStream(nombre);
                 fout.write(barr);
                 fout.close();
             }
-        }catch (Exception e){
+            catch (Exception e){
             e.printStackTrace();
         }
-    } //FIXME
+        return nombre;
+    }
 /*
     public void cargarCat() {
         establecerConexionSuperUsuario();
