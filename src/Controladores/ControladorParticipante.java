@@ -191,7 +191,7 @@ public class ControladorParticipante implements Initializable {
 
         actualizarSubastas.setOnAction(event -> {
             Date fechaSystem = obtenerFecha();
-            ArrayList<Subasta> subastasValidas = gestorParticipante.getSubastas(new java.sql.Date(fechaSystem.getTime()));
+            ArrayList<Subasta> subastasValidas = gestorParticipante.getSubastas(new java.sql.Date(fechaSystem.getTime()),participanteLogueado);
             tablaPuja.setItems(FXCollections.observableArrayList(subastasValidas));
         });
 
@@ -202,7 +202,7 @@ public class ControladorParticipante implements Initializable {
 
         Date fechaSystem = obtenerFecha();
 
-        ArrayList<Subasta> subastasValidas = gestorParticipante.getSubastas(new java.sql.Date(fechaSystem.getTime()));
+        ArrayList<Subasta> subastasValidas = gestorParticipante.getSubastas(new java.sql.Date(fechaSystem.getTime()),participanteLogueado);
         ArrayList<String> categoriasElegir = gestorParticipante.getCategorias();
         categoriaSubasta.setItems(FXCollections.observableArrayList(categoriasElegir));
         tablaPuja.setItems(FXCollections.observableArrayList(subastasValidas));

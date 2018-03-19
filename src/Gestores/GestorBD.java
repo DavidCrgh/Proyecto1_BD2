@@ -371,17 +371,18 @@ public class GestorBD {
         return subCategorias;
     }
 
-    public ArrayList<Subasta> getSubastas(Date fechaSistema){
-        String sqlSubastasBuenas = "{call C##PRINCIPALSCHEMA.getSubastasValidas(?,?)}";
+    public ArrayList<Subasta> getSubastas(Date fechaSistema, String aliasVendedor){
+        String sqlSubastasBuenas = "{call C##PRINCIPALSCHEMA.getSubastasValidas(?,?,?)}";
         ArrayList<Subasta> subastas = new ArrayList<>();
         try{
             CallableStatement subastasBuenas = conexion.prepareCall(sqlSubastasBuenas);
             subastasBuenas.setDate(1,fechaSistema);
-            subastasBuenas.registerOutParameter(2,OracleTypes.CURSOR);
+            subastasBuenas.setString(2,aliasVendedor);
+            subastasBuenas.registerOutParameter(3,OracleTypes.CURSOR);
 
             subastasBuenas.executeUpdate();
 
-            ResultSet subastasDevueltas = (ResultSet) subastasBuenas.getObject(2);
+            ResultSet subastasDevueltas = (ResultSet) subastasBuenas.getObject(3);
 
             while(subastasDevueltas.next()){
                 Subasta subastaAuxiliar = new Subasta(subastasDevueltas.getString("ID"),subastasDevueltas.getString("ALIASVENDEDOR"),
