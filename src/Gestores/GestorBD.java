@@ -1,6 +1,7 @@
 package Gestores;
 
 
+import Modelo.Subasta;
 import com.opencsv.CSVReader;
 import com.sun.org.apache.regexp.internal.RE;
 import javafx.fxml.FXMLLoader;
@@ -290,8 +291,8 @@ public class GestorBD {
         try{
             CallableStatement agregarVariables = conexion.prepareCall(procedimientoVaribles);
             agregarVariables.setString(1,aliasAdministrador);
-            agregarVariables.setBigDecimal(2,incrementoMinimo);
-            agregarVariables.setBigDecimal(3,porcentajeMejora);
+            agregarVariables.setBigDecimal(2,porcentajeMejora);
+            agregarVariables.setBigDecimal(3,incrementoMinimo);
 
             agregarVariables.executeUpdate();
         }catch(SQLException e){
@@ -302,8 +303,7 @@ public class GestorBD {
     public void crearSubasta(String aliasVendedor, Date tiempoInicio, Date tiempoFin, String descripcionItem,
                              String nombreImagen, BigDecimal precioBase, String detallesEntrega, int idSubcategoria){ // El id del item se obtiene en el stored procedure
 
-        establecerConexionSuperUsuario();
-        String subastaSQL = "{call crearSubasta(?,?,?,?,?,?,?,?)}"; //INSERT INTO ITEM(DESCRIPCION,FOTO,PRECIO_BASE,DETALLESENTREGA,IDSUBCATEGORIA) VALUES(?,?,?,?,?);
+        String subastaSQL = "{call C##PRINCIPALSCHEMA.crearSubasta(?,?,?,?,?,?,?,?)}"; //INSERT INTO ITEM(DESCRIPCION,FOTO,PRECIO_BASE,DETALLESENTREGA,IDSUBCATEGORIA) VALUES(?,?,?,?,?);
         try {
             FileInputStream imagen = new FileInputStream("Imagenes/"+nombreImagen);
 
@@ -369,6 +369,67 @@ public class GestorBD {
         }
 
         return subCategorias;
+    }
+
+    public ArrayList<Subasta> getSubastas(Date fechaSistema){
+        String sqlSubastasBuenas = "{call C##PRINCIPALSCHEMA.getSubastasValidas(?,?)}";
+        ArrayList<Subasta> subastas = new ArrayList<>();
+        try{
+            CallableStatement subastasBuenas = conexion.prepareCall(sqlSubastasBuenas);
+            subastasBuenas.setDate(1,fechaSistema);
+            subastasBuenas.registerOutParameter(2,OracleTypes.CURSOR);
+
+            subastasBuenas.executeUpdate();
+
+            ResultSet subastasDevueltas = (ResultSet) subastasBuenas.getObject(2);
+
+            while(subastasDevueltas.next()){
+                Subasta subastaAuxiliar = new Subasta(subastasDevueltas.getString("ID"),subastasDevueltas.getString("ALIASVENDEDOR"),
+                        subastasDevueltas.getString("PRECIO_BASE"),subastasDevueltas.getString("DESCRIPCION"));
+
+                subastas.add(subastaAuxiliar);
+            }
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return subastas;
+    }
+
+    public void pujarPuja(String aliasComprador, int idItem, BigDecimal ofertaComprador, Date fechaPuja){
+       String sqlPujar = "{call C##PRINCIPALSCHEMA.crearPuja(?,?,?,?)}";
+       try{
+           CallableStatement pujar = conexion.prepareCall(sqlPujar);
+           pujar.setString(1,aliasComprador);
+           pujar.setInt(2,idItem);
+           pujar.setBigDecimal(3,ofertaComprador);
+           pujar.setDate(4,fechaPuja);
+           pujar.executeUpdate();
+       }catch(SQLException e){
+           e.printStackTrace();
+       }
+    }
+
+    public int buscarIdItem(int idSubasta){
+        String sqlItem = "{call C##PRINCIPALSCHEMA.buscarIdItem(?,?)}";
+        int idItemDevuelto = 0;
+
+        try{
+            CallableStatement buscarIdItem = conexion.prepareCall(sqlItem);
+            buscarIdItem.setInt(1,idSubasta);
+            buscarIdItem.registerOutParameter(2,OracleTypes.CURSOR);
+            buscarIdItem.executeUpdate();
+
+            ResultSet idDevuelto = (ResultSet) buscarIdItem.getObject(2);
+
+            while(idDevuelto.next()){
+                idItemDevuelto = Integer.parseInt(idDevuelto.getString("IDITEM"));
+            }
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return idItemDevuelto;
     }
 
     public void cargarImagen(){
