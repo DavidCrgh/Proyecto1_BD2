@@ -398,14 +398,14 @@ public class GestorBD {
         return subastas;
     }
 
-    public ArrayList<Subasta> getSubastasPorCategoria(Date fechaSistema, String aliasVendedor, String categoria,int modalidad){
+    public ArrayList<Subasta> getSubastasPorCategoria(Date fechaSistema, String aliasVendedor, int idCategoria,int modalidad){
         String sqlSubastasBuenasPorCategoria = "{call C##PRINCIPALSCHEMA.getSubastasPorCategoria(?,?,?,?,?)}";
         ArrayList<Subasta> subastasPorCategoria = new ArrayList<>();
         try{
             CallableStatement subastasBuenasPorCategoria = conexion.prepareCall(sqlSubastasBuenasPorCategoria);
             subastasBuenasPorCategoria.setDate(1,fechaSistema);
             subastasBuenasPorCategoria.setString(2,aliasVendedor);
-            subastasBuenasPorCategoria.setString(3,categoria);
+            subastasBuenasPorCategoria.setInt(3,idCategoria);
             subastasBuenasPorCategoria.setInt(4,modalidad);
             subastasBuenasPorCategoria.registerOutParameter(5,OracleTypes.CURSOR);
 

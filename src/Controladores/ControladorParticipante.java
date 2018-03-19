@@ -222,13 +222,13 @@ public class ControladorParticipante implements Initializable {
                 ArrayList<Subasta> subastasPorCategoriaoSubCategoria = null;
                 if(filtroCategoria.getSelectionModel().getSelectedItem() != null && filtroSubCategoria.getSelectionModel().getSelectedItem() == null) {
 
-                    String categoria = filtroCategoria.getSelectionModel().getSelectedItem().toString();
-                    subastasPorCategoriaoSubCategoria = gestorParticipante.getSubastasPorCategoria(new java.sql.Date(fechaSystem.getTime()), participanteLogueado, categoria, 0);
+                    String idCategoria = filtroCategoria.getSelectionModel().getSelectedItem().toString().substring(0, filtroCategoria.getSelectionModel().getSelectedItem().toString().indexOf("-"));
+                    subastasPorCategoriaoSubCategoria = gestorParticipante.getSubastasPorCategoria(new java.sql.Date(fechaSystem.getTime()), participanteLogueado, Integer.parseInt(idCategoria), 0);
 
                 }
                 else{
-                   String subCategoria = filtroSubCategoria.getSelectionModel().getSelectedItem().toString();
-                   subastasPorCategoriaoSubCategoria = gestorParticipante.getSubastasPorCategoria(new java.sql.Date(fechaSystem.getTime()), participanteLogueado, subCategoria,1);
+                   String idSubCategoria = filtroSubCategoria.getSelectionModel().getSelectedItem().toString().substring(0, filtroSubCategoria.getSelectionModel().getSelectedItem().toString().indexOf("-"));
+                   subastasPorCategoriaoSubCategoria = gestorParticipante.getSubastasPorCategoria(new java.sql.Date(fechaSystem.getTime()), participanteLogueado, Integer.parseInt(idSubCategoria),1);
                 }
                 tablaPuja.setItems(FXCollections.observableArrayList(subastasPorCategoriaoSubCategoria));
             }
