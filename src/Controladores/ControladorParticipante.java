@@ -192,6 +192,13 @@ public class ControladorParticipante implements Initializable {
 
             });
 
+        filtroCategoria.setOnAction(event -> {
+            if(filtroCategoria.getSelectionModel().getSelectedItem() != null) {
+                String idCategoria = filtroCategoria.getSelectionModel().getSelectedItem().toString().substring(0, filtroCategoria.getSelectionModel().getSelectedItem().toString().indexOf("-"));
+                setSubCategoriaSubasta(gestorParticipante.filtrarSubCategorias(Integer.parseInt(idCategoria)));
+            }
+        });
+
         cargarImagen.setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Seleccionar Imagen");
@@ -239,12 +246,14 @@ public class ControladorParticipante implements Initializable {
         ArrayList<Subasta> subastasValidas = gestorParticipante.getSubastas(new java.sql.Date(fechaSystem.getTime()),participanteLogueado);
         ArrayList<String> categoriasElegir = gestorParticipante.getCategorias();
         categoriaSubasta.setItems(FXCollections.observableArrayList(categoriasElegir));
+        filtroCategoria.setItems(FXCollections.observableArrayList(categoriasElegir));
         tablaPuja.setItems(FXCollections.observableArrayList(subastasValidas));
 
     }
 
     public void setSubCategoriaSubasta(ArrayList<String> subCategorias){
         subCategoriaSubasta.setItems(FXCollections.observableArrayList(subCategorias));
+        filtroSubCategoria.setItems(FXCollections.observableArrayList(subCategorias));
     }
 
     public void configurarColumnas(){
