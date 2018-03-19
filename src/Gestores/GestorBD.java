@@ -19,7 +19,8 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;
-import java.util.ArrayList;
+import java.sql.Date;
+import java.util.*;
 
 /**
  * Created by Javier on 2/19/2018.
@@ -395,6 +396,34 @@ public class GestorBD {
             e.printStackTrace();
         }
         return subastas;
+    }
+
+    public ArrayList<Subasta> getSubastasPorCategoria(Date fechaSistema, String aliasVendedor, String categoria,int modalidad){
+        String sqlSubastasBuenasPorCategoria = "{call C##PRINCIPALSCHEMA.getSubastasPorCategoria(?,?,?,?,?)}";
+        ArrayList<Subasta> subastasPorCategoria = new ArrayList<>();
+        try{
+            CallableStatement subastasBuenasPorCategoria = conexion.prepareCall(sqlSubastasBuenasPorCategoria);
+            subastasBuenasPorCategoria.setDate(1,fechaSistema);
+            subastasBuenasPorCategoria.setString(2,aliasVendedor);
+            subastasBuenasPorCategoria.setString(3,categoria);
+            subastasBuenasPorCategoria.setInt(4,modalidad);
+            subastasBuenasPorCategoria.registerOutParameter(5,OracleTypes.CURSOR);
+
+            subastasBuenasPorCategoria.executeUpdate();
+
+            ResultSet subastasDevueltas = (ResultSet) subastasBuenasPorCategoria.getObject(5);
+
+            while(subastasDevueltas.next()){
+                Subasta subastaAuxiliar = new Subasta(subastasDevueltas.getString("ID"),subastasDevueltas.getString("ALIASVENDEDOR"),
+                        subastasDevueltas.getString("PRECIO_BASE"),subastasDevueltas.getString("DESCRIPCION"));
+
+                subastasPorCategoria.add(subastaAuxiliar);
+            }
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return subastasPorCategoria;
     }
 
     public void pujarPuja(String aliasComprador, int idItem, BigDecimal ofertaComprador, Date fechaPuja){

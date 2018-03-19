@@ -103,6 +103,18 @@ public class ControladorParticipante implements Initializable {
     @FXML
     public Button actualizarSubastas;
 
+    @FXML
+    public ComboBox filtroCategoria;
+
+    @FXML
+    public ComboBox filtroSubCategoria;
+
+    @FXML
+    public Button sinFiltro;
+
+    @FXML
+    public Button filtrar;
+
     GestorBD gestorParticipante;
 
     String participanteLogueado;
@@ -189,11 +201,33 @@ public class ControladorParticipante implements Initializable {
             // imagenItem.setImage(new Image(...)); Buscar en internet :v
         });
 
-        actualizarSubastas.setOnAction(event -> {
+        sinFiltro.setOnAction(event -> {
             Date fechaSystem = obtenerFecha();
             ArrayList<Subasta> subastasValidas = gestorParticipante.getSubastas(new java.sql.Date(fechaSystem.getTime()),participanteLogueado);
             tablaPuja.setItems(FXCollections.observableArrayList(subastasValidas));
         });
+
+        filtrar.setOnAction(event -> {
+            if(filtroCategoria.getSelectionModel().getSelectedItem() == null)
+                gestorParticipante.invocarAlerta("Debe seleccionarse una categoria para filtrar");
+            else{
+                Date fechaSystem = obtenerFecha();
+                ArrayList<Subasta> subastasPorCategoriaoSubCategoria = null;
+                if(filtroCategoria.getSelectionModel().getSelectedItem() != null && filtroSubCategoria.getSelectionModel().getSelectedItem() == null) {
+
+                    String categoria = filtroCategoria.getSelectionModel().getSelectedItem().toString();
+                    subastasPorCategoriaoSubCategoria = gestorParticipante.getSubastasPorCategoria(new java.sql.Date(fechaSystem.getTime()), participanteLogueado, categoria, 0);
+
+                }
+                else{
+                   String subCategoria = filtroSubCategoria.getSelectionModel().getSelectedItem().toString();
+                   subastasPorCategoriaoSubCategoria = gestorParticipante.getSubastasPorCategoria(new java.sql.Date(fechaSystem.getTime()), participanteLogueado, subCategoria,1);
+                }
+                tablaPuja.setItems(FXCollections.observableArrayList(subastasPorCategoriaoSubCategoria));
+            }
+        });
+
+
 
 
     }
