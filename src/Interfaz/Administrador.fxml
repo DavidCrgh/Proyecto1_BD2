@@ -7,6 +7,8 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -171,6 +173,60 @@
                                     <Font size="36.0" />
                                  </font>
                               </Text>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+                  <Tab text="Consultas">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Separator layoutX="510.0" layoutY="29.0" orientation="VERTICAL" prefHeight="424.0" prefWidth="2.0" />
+                              <Label layoutX="124.0" layoutY="29.0" text="Subastas Por Categoría-SubCategoría ">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <TableView fx:id="tablaSubastasAdmi" layoutX="14.0" layoutY="64.0" prefHeight="200.0" prefWidth="484.0">
+                                <columns>
+                                  <TableColumn fx:id="idSubastaAdmi" prefWidth="75.0" text="ID" />
+                                  <TableColumn fx:id="vendedorSubastaAdmi" prefWidth="75.0" text="Vendedor" />
+                                    <TableColumn fx:id="precioBaseSubastaAdmi" prefWidth="75.0" text="Precio Base" />
+                                    <TableColumn fx:id="subCategoriaSubastaAdmi" prefWidth="258.0" text="SubCategoría" />
+                                </columns>
+                              </TableView>
+                              <Button fx:id="sinFiltroAdmi" layoutX="14.0" layoutY="277.0" mnemonicParsing="false" text="Sin Filtro">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="mostrarDetallesAdmi" layoutX="388.0" layoutY="277.0" mnemonicParsing="false" text="Mostrar Detalles">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Label layoutX="141.0" layoutY="322.0" text="Filtros">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="141.0" layoutY="355.0" text="Categoría">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="141.0" layoutY="397.0" text="SubCategoría">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <ComboBox fx:id="filtroCategoriaAdmi" layoutX="250.0" layoutY="353.0" prefWidth="150.0" />
+                              <ComboBox fx:id="filtroSubCategoriaAdmi" layoutX="250.0" layoutY="394.0" prefWidth="150.0" />
+                              <Button fx:id="filtrarAdmi" layoutX="230.0" layoutY="441.0" mnemonicParsing="false" text="Filtrar">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
                            </children>
                         </AnchorPane>
                     </content>

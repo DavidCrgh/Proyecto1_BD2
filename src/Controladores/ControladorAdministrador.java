@@ -1,14 +1,23 @@
 package Controladores;
 
 import Gestores.GestorBD;
+import Modelo.Item;
+import Modelo.Subasta;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 /**
@@ -91,6 +100,37 @@ public class ControladorAdministrador implements Initializable{
     @FXML
     public Button actualizarModificarUsuario;
 
+    @FXML
+    public TableView tablaSubastasAdmi;
+
+    @FXML
+    public TableColumn idSubastaAdmi;
+
+    @FXML
+    public TableColumn vendedorSubastaAdmi;
+
+    @FXML
+    public TableColumn precioBaseSubastaAdmi;
+
+    @FXML
+    public TableColumn subCategoriaSubastaAdmi;
+
+    @FXML
+    public Button sinFiltroAdmi;
+
+    @FXML
+    public Button mostrarDetallesAdmi;
+
+    @FXML
+    public Button filtrarAdmi;
+
+    @FXML
+    public ComboBox filtroCategoriaAdmi;
+
+    @FXML
+    public ComboBox filtroSubCategoriaAdmi;
+
+
     GestorBD gestorAdministrador;
 
     String administradorLogueado;
@@ -99,8 +139,7 @@ public class ControladorAdministrador implements Initializable{
 
     public void initialize(URL fxmlLocations, ResourceBundle resources){
 
-
-        datosDefecto();
+        configurarColumnas();
 
         registrarUsuario.setOnAction(event -> {
             if(listaTemporalTelefonos.size()== 0 || aliasRegistro.getText().equals("")||contrasennaRegistro.getText().equals("")
@@ -220,6 +259,48 @@ public class ControladorAdministrador implements Initializable{
             }
             limpiarVariables();
         });
+
+        filtrarAdmi.setOnAction(event -> {
+            if(filtroCategoriaAdmi.getSelectionModel().getSelectedItem() == null)
+                gestorAdministrador.invocarAlerta("Debe seleccionarse una categoria para filtrar");
+            else{
+                Date fechaSystem = gestorAdministrador.obtenerFecha();
+                ArrayList<Subasta> subastasPorCategoriaoSubCategoria = null;
+                if(filtroCategoriaAdmi.getSelectionModel().getSelectedItem() != null && filtroSubCategoriaAdmi.getSelectionModel().getSelectedItem() == null) {
+
+                    String idCategoria = filtroCategoriaAdmi.getSelectionModel().getSelectedItem().toString().substring(0, filtroCategoriaAdmi.getSelectionModel().getSelectedItem().toString().indexOf("-"));
+                    subastasPorCategoriaoSubCategoria = gestorAdministrador.getSubastasPorCategoria(new java.sql.Date(fechaSystem.getTime()), "DFG", Integer.parseInt(idCategoria), 0);
+
+                }
+                else{
+                    String idSubCategoria = filtroSubCategoriaAdmi.getSelectionModel().getSelectedItem().toString().substring(0, filtroSubCategoriaAdmi.getSelectionModel().getSelectedItem().toString().indexOf("-"));
+                    subastasPorCategoriaoSubCategoria = gestorAdministrador.getSubastasPorCategoria(new java.sql.Date(fechaSystem.getTime()), "DFG", Integer.parseInt(idSubCategoria),1);
+                }
+                tablaSubastasAdmi.setItems(FXCollections.observableArrayList(subastasPorCategoriaoSubCategoria));
+            }
+        });
+
+        sinFiltroAdmi.setOnAction(event -> {
+            Date fechaSystem = gestorAdministrador.obtenerFecha();
+            ArrayList<Subasta> subastasValidas = gestorAdministrador.getSubastas(new java.sql.Date(fechaSystem.getTime()),"DFG");
+            tablaSubastasAdmi.setItems(FXCollections.observableArrayList(subastasValidas));
+
+            filtroCategoriaAdmi.getSelectionModel().clearSelection();
+            filtroSubCategoriaAdmi.getSelectionModel().clearSelection();
+        });
+
+        filtroCategoriaAdmi.setOnAction(event -> {
+            if(filtroCategoriaAdmi.getSelectionModel().getSelectedItem() != null) {
+                String idCategoria = filtroCategoriaAdmi.getSelectionModel().getSelectedItem().toString().substring(0, filtroCategoriaAdmi.getSelectionModel().getSelectedItem().toString().indexOf("-"));
+                filtroSubCategoriaAdmi.setItems(FXCollections.observableArrayList(gestorAdministrador.filtrarSubCategorias(Integer.parseInt(idCategoria))));
+            }
+        });
+
+        mostrarDetallesAdmi.setOnAction(event -> {
+            Subasta subastaSeleccionada = (Subasta) tablaSubastasAdmi.getSelectionModel().getSelectedItem();
+            Item informacionItem = gestorAdministrador.extraerInformacionItem(subastaSeleccionada.getId());
+            abrirVentanaDetallesItem(informacionItem);
+        });
     }
 
     public void invocarAlerta(String mensaje) {
@@ -232,7 +313,16 @@ public class ControladorAdministrador implements Initializable{
     }
 
     public void datosDefecto(){
+        Date fechaSystem = gestorAdministrador.obtenerFecha();
+
+        ArrayList<Subasta> subastasValidas = gestorAdministrador.getSubastas(new java.sql.Date(fechaSystem.getTime()),"DFH");//TODO para que busque todos los participantes
+        ArrayList<String> categoriasElegir = gestorAdministrador.getCategorias();
+        filtroCategoriaAdmi.setItems(FXCollections.observableArrayList(categoriasElegir));
+
+        tablaSubastasAdmi.setItems(FXCollections.observableArrayList(subastasValidas));
+
         tipoUsuario.getItems().addAll("Administrador","Participante");
+
     }
 
     public void limpiarCamposRegistro(){
@@ -277,6 +367,30 @@ public class ControladorAdministrador implements Initializable{
         for(int i =0;i<infoVieja.size();i++){
             if(posibleInfo[i].equals(""))
                 posibleInfo[i] = infoVieja.get(i);
+        }
+    }
+
+    public void configurarColumnas(){
+        idSubastaAdmi.setCellValueFactory(new PropertyValueFactory<Subasta,String>("id"));
+        vendedorSubastaAdmi.setCellValueFactory(new PropertyValueFactory<Subasta,String>("vendedor"));
+        precioBaseSubastaAdmi.setCellValueFactory(new PropertyValueFactory<Subasta,String>("precioBase"));
+        subCategoriaSubastaAdmi.setCellValueFactory(new PropertyValueFactory<Subasta,String>("subCategoria"));
+    }
+
+    public void abrirVentanaDetallesItem(Item infoItem){
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            Parent root = loader.load(getClass().getResource("../Interfaz/DetallesItem.fxml").openStream());
+            ControladorDetallesItem controladorItem = loader.getController();
+            controladorItem.itemActual = infoItem;
+            controladorItem.llenarInformacion();
+            Stage escenario = new Stage();
+            escenario.setTitle("Detalles Del Item");
+            escenario.setScene(new Scene(root,600,438));
+            escenario.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

@@ -511,6 +511,21 @@ public class GestorBD {
         }
         return nombre;
     }
+
+    public java.util.Date obtenerFecha(){
+        java.util.Date fechaSistemaReal = null;
+        try{
+            DateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.ENGLISH);
+            java.util.Date objetoDate = new java.util.Date();
+            String fechaSistema = formatoFecha.format(objetoDate);
+            fechaSistemaReal = formatoFecha.parse(fechaSistema);
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return fechaSistemaReal;
+    }
 /*
     public void cargarCat() {
         establecerConexionSuperUsuario();

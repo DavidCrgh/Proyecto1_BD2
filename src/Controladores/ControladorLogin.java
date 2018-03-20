@@ -102,6 +102,7 @@ public class ControladorLogin implements Initializable {
                 ControladorAdministrador controladorAdministrador = loader.getController();
                 controladorAdministrador.gestorAdministrador = gestorBase;// Este gestor base ya vendria con la conexion asociada a un usuario, se pasa el gestor para que del otro lado se pueda hacer el llamado a las funciones de la base y asi.
                 controladorAdministrador.administradorLogueado = usuarioAdministrador.getText(); // Para tener guardado el alias en la clase del controlador
+                controladorAdministrador.datosDefecto();
                 break;
             case "Participante"://TODO: La interfaz del participante y su controlador asociado.
                 ControladorParticipante controladorParticipante = loader.getController();

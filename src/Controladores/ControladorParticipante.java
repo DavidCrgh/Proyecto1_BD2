@@ -170,10 +170,7 @@ public class ControladorParticipante implements Initializable {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-
-
-
-
+                limpiarControles();
             }
         });
 
@@ -182,7 +179,7 @@ public class ControladorParticipante implements Initializable {
                 gestorParticipante.invocarAlerta("Se debe seleccionar una puja y una oferta válidas");
 
             else{
-                Date fechaSystem = obtenerFecha();
+                Date fechaSystem = gestorParticipante.obtenerFecha();
                 BigDecimal oferta = new BigDecimal(nuevaOfertaPuja.getText());
                 Subasta subastaSeleccionada = (Subasta)tablaPuja.getSelectionModel().getSelectedItem();
                 int idItem = gestorParticipante.buscarIdItem(Integer.parseInt(subastaSeleccionada.getId()));
@@ -216,16 +213,19 @@ public class ControladorParticipante implements Initializable {
         });
 
         sinFiltro.setOnAction(event -> {
-            Date fechaSystem = obtenerFecha();
+            Date fechaSystem = gestorParticipante.obtenerFecha();
             ArrayList<Subasta> subastasValidas = gestorParticipante.getSubastas(new java.sql.Date(fechaSystem.getTime()),participanteLogueado);
             tablaPuja.setItems(FXCollections.observableArrayList(subastasValidas));
+
+            filtroCategoria.getSelectionModel().clearSelection();
+            filtroSubCategoria.getSelectionModel().clearSelection();
         });
 
         filtrar.setOnAction(event -> {
             if(filtroCategoria.getSelectionModel().getSelectedItem() == null)
                 gestorParticipante.invocarAlerta("Debe seleccionarse una categoria para filtrar");
             else{
-                Date fechaSystem = obtenerFecha();
+                Date fechaSystem = gestorParticipante.obtenerFecha();
                 ArrayList<Subasta> subastasPorCategoriaoSubCategoria = null;
                 if(filtroCategoria.getSelectionModel().getSelectedItem() != null && filtroSubCategoria.getSelectionModel().getSelectedItem() == null) {
 
@@ -254,7 +254,7 @@ public class ControladorParticipante implements Initializable {
 
     public void datosDefecto(){
 
-        Date fechaSystem = obtenerFecha();
+        Date fechaSystem = gestorParticipante.obtenerFecha();
 
         ArrayList<Subasta> subastasValidas = gestorParticipante.getSubastas(new java.sql.Date(fechaSystem.getTime()),participanteLogueado);
         ArrayList<String> categoriasElegir = gestorParticipante.getCategorias();
@@ -276,21 +276,6 @@ public class ControladorParticipante implements Initializable {
         columnaSubCategoriaPuja.setCellValueFactory(new PropertyValueFactory<Subasta,String>("subCategoria"));
     }
 
-    public Date obtenerFecha(){
-        Date fechaSistemaReal = null;
-        try{
-            DateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.ENGLISH);
-            Date objetoDate = new Date();
-            String fechaSistema = formatoFecha.format(objetoDate);
-            fechaSistemaReal = formatoFecha.parse(fechaSistema);
-
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-
-        return fechaSistemaReal;
-    }
-
     public void abrirVentanaDetallesItem(Item infoItem){
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -306,6 +291,23 @@ public class ControladorParticipante implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void limpiarControles(){
+        fechaInicio.getEditor().clear();
+        fechaFin.getEditor().clear();
+        horaInicio.clear();
+        minutoInicio.clear();
+        segundoInicio.clear();
+        horaFin.clear();
+        minutoFin.clear();
+        segundoFin.clear();
+        descripcionItem.clear();
+        detallesEntrega.clear();
+        imagenItem.setImage(null);
+        categoriaSubasta.getSelectionModel().clearSelection();
+        subCategoriaSubasta.getSelectionModel().clearSelection();
+        precioBaseSubasta.clear();
     }
 
 }
