@@ -229,5 +229,65 @@
                </children></AnchorPane>
       </content>
     </Tab>
+      <Tab text="Consultas">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Label layoutX="245.0" layoutY="14.0" text="Historial de Pujas">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <TableView fx:id="tablaSubastasHistorialPart" layoutX="24.0" layoutY="64.0" prefHeight="200.0" prefWidth="557.0">
+                    <columns>
+                      <TableColumn fx:id="idSubastasHistorialPart" prefWidth="75.0" text="ID" />
+                      <TableColumn fx:id="vendedorSubastasHistorialPart" prefWidth="75.0" text="Vendedor" />
+                        <TableColumn fx:id="precioBaseSubastasHistorialPart" prefWidth="75.0" text="Precio Base" />
+                        <TableColumn fx:id="subCategoriaSubastasHistorialPart" prefWidth="75.0" text="SubCategoría" />
+                    </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+                  <TableView fx:id="tablaPujasHistorialPart" layoutX="24.0" layoutY="311.0" prefHeight="185.0" prefWidth="557.0">
+                     <columns>
+                        <TableColumn fx:id="idPujasPart" prefWidth="75.0" text="ID" />
+                        <TableColumn fx:id="compradorPujasPart" prefWidth="75.0" text="Comprador" />
+                        <TableColumn fx:id="fechaHoraPujasPart" prefWidth="75.0" text="Fecha y Hora" />
+                        <TableColumn fx:id="montoPujasPart" prefWidth="75.0" text="Monto Ofrecido" />
+                     </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+                  <Label layoutX="24.0" layoutY="44.0" text="Subastas">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="24.0" layoutY="291.0" text="Pujas">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="mostrarDetallesSubastasHistorialPart" layoutX="471.0" layoutY="264.0" mnemonicParsing="false" text="Mostrar Detalles">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="actualizarSubastasHistorialPart" layoutX="370.0" layoutY="264.0" mnemonicParsing="false" text="Actualizar">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="mostrarHistorialPujasPart" layoutX="468.0" layoutY="496.0" mnemonicParsing="false" text="Mostrar Historial">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Button>
+               </children>
+            </AnchorPane>
+        </content>
+      </Tab>
   </tabs>
 </TabPane>

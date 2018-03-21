@@ -2,6 +2,7 @@ package Controladores;
 
 import Gestores.GestorBD;
 import Modelo.Item;
+import Modelo.Puja;
 import Modelo.Subasta;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -107,9 +108,6 @@ public class ControladorParticipante implements Initializable {
     public Button pujarPuja;
 
     @FXML
-    public Button actualizarSubastas;
-
-    @FXML
     public ComboBox filtroCategoria;
 
     @FXML
@@ -120,6 +118,47 @@ public class ControladorParticipante implements Initializable {
 
     @FXML
     public Button filtrar;
+
+    //Ambos
+
+    @FXML
+    public TableView tablaSubastasHistorialPart;
+
+    @FXML
+    public TableView tablaPujasHistorialPart;
+
+    @FXML
+    public TableColumn idSubastasHistorialPart;
+
+    @FXML
+    public TableColumn vendedorSubastasHistorialPart;
+
+    @FXML
+    public TableColumn precioBaseSubastasHistorialPart;
+
+    @FXML
+    public TableColumn subCategoriaSubastasHistorialPart;
+
+    @FXML
+    public TableColumn idPujasPart;
+
+    @FXML
+    public TableColumn compradorPujasPart;
+
+    @FXML
+    public TableColumn fechaHoraPujasPart;
+
+    @FXML
+    public TableColumn montoPujasPart;
+
+    @FXML
+    public Button actualizarSubastasHistorialPart;
+
+    @FXML
+    public Button mostrarDetallesSubastasHistorialPart;
+
+    @FXML
+    public Button mostrarHistorialPujasPart;
 
     GestorBD gestorParticipante;
 
@@ -179,12 +218,22 @@ public class ControladorParticipante implements Initializable {
                 gestorParticipante.invocarAlerta("Se debe seleccionar una puja y una oferta válidas");
 
             else{
-                Date fechaSystem = gestorParticipante.obtenerFecha();
+                Subasta subastaSeleccionada = (Subasta) tablaPuja.getSelectionModel().getSelectedItem();
+                BigDecimal precioBase = new BigDecimal(subastaSeleccionada.getPrecioBase());
                 BigDecimal oferta = new BigDecimal(nuevaOfertaPuja.getText());
-                Subasta subastaSeleccionada = (Subasta)tablaPuja.getSelectionModel().getSelectedItem();
-                int idItem = gestorParticipante.buscarIdItem(Integer.parseInt(subastaSeleccionada.getId()));
 
-                gestorParticipante.pujarPuja(participanteLogueado,idItem,oferta,new java.sql.Date(fechaSystem.getTime()));
+                if(precioBase.compareTo(oferta) == 1){
+                    gestorParticipante.invocarAlerta("La oferta debe ser mayor al precio base");
+
+                }
+                else {
+                    Date fechaSystem = gestorParticipante.obtenerFecha();
+
+
+                    int idItem = gestorParticipante.buscarIdItem(Integer.parseInt(subastaSeleccionada.getId()));
+
+                    gestorParticipante.pujarPuja(participanteLogueado, idItem, oferta, new java.sql.Date(fechaSystem.getTime()));
+                }
             }
         });
 
@@ -247,7 +296,27 @@ public class ControladorParticipante implements Initializable {
             abrirVentanaDetallesItem(informacionItem);
         });
 
+        actualizarSubastasHistorialPart.setOnAction(event -> {
+            ArrayList<Subasta> todasLasSubastas = gestorParticipante.getSubastasSinRestriccion();
+            tablaSubastasHistorialPart.setItems(FXCollections.observableArrayList(todasLasSubastas));
+        });
 
+        mostrarDetallesSubastasHistorialPart.setOnAction(event -> {
+            Subasta subastaSeleccionadaHistorial = (Subasta) tablaSubastasHistorialPart.getSelectionModel().getSelectedItem();
+            Item informacionItemHistorial = gestorParticipante.extraerInformacionItem(subastaSeleccionadaHistorial.getId());
+            abrirVentanaDetallesItem(informacionItemHistorial);
+        });
+
+        mostrarHistorialPujasPart.setOnAction(event -> {
+            if(tablaSubastasHistorialPart.getSelectionModel().getSelectedItem() == null)
+                gestorParticipante.invocarAlerta("Debe seleccionar una subasta");
+            else{
+                Subasta subastaHistorialSeleccionada = (Subasta) tablaSubastasHistorialPart.getSelectionModel().getSelectedItem();
+                ArrayList<Puja> pujasAsociadas = gestorParticipante.getPujas(Integer.parseInt(subastaHistorialSeleccionada.getId()));
+
+                tablaPujasHistorialPart.setItems(FXCollections.observableArrayList(pujasAsociadas));
+            }
+        });
 
 
     }
@@ -256,8 +325,11 @@ public class ControladorParticipante implements Initializable {
 
         Date fechaSystem = gestorParticipante.obtenerFecha();
 
+        ArrayList<Subasta> todasLasSubastas = gestorParticipante.getSubastasSinRestriccion();
         ArrayList<Subasta> subastasValidas = gestorParticipante.getSubastas(new java.sql.Date(fechaSystem.getTime()),participanteLogueado);
         ArrayList<String> categoriasElegir = gestorParticipante.getCategorias();
+
+        tablaSubastasHistorialPart.setItems(FXCollections.observableArrayList(todasLasSubastas));
         categoriaSubasta.setItems(FXCollections.observableArrayList(categoriasElegir));
         filtroCategoria.setItems(FXCollections.observableArrayList(categoriasElegir));
         tablaPuja.setItems(FXCollections.observableArrayList(subastasValidas));
@@ -274,6 +346,17 @@ public class ControladorParticipante implements Initializable {
         columnaVendedorPuja.setCellValueFactory(new PropertyValueFactory<Subasta,String>("vendedor"));
         columnaPrecioBasePuja.setCellValueFactory(new PropertyValueFactory<Subasta,String>("precioBase"));
         columnaSubCategoriaPuja.setCellValueFactory(new PropertyValueFactory<Subasta,String>("subCategoria"));
+
+        idSubastasHistorialPart.setCellValueFactory(new PropertyValueFactory<Subasta,String>("id"));
+        vendedorSubastasHistorialPart.setCellValueFactory(new PropertyValueFactory<Subasta,String>("vendedor"));
+        precioBaseSubastasHistorialPart.setCellValueFactory(new PropertyValueFactory<Subasta,String>("precioBase"));
+        subCategoriaSubastasHistorialPart.setCellValueFactory(new PropertyValueFactory<Subasta,String>("subCategoria"));
+
+        idPujasPart.setCellValueFactory(new PropertyValueFactory<Puja,String>("id"));
+        compradorPujasPart.setCellValueFactory(new PropertyValueFactory<Puja,String>("comprador"));
+        fechaHoraPujasPart.setCellValueFactory(new PropertyValueFactory<Puja,String>("fechaHora"));
+        montoPujasPart.setCellValueFactory(new PropertyValueFactory<Puja,String>("monto"));
+
     }
 
     public void abrirVentanaDetallesItem(Item infoItem){

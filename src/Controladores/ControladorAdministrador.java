@@ -167,6 +167,9 @@ public class ControladorAdministrador implements Initializable{
     @FXML
     public Button mostrarHistorialAdmi;
 
+    @FXML
+    public Button actualizarSubastasHistorialAdmi;
+
     GestorBD gestorAdministrador;
 
     String administradorLogueado;
@@ -354,6 +357,13 @@ public class ControladorAdministrador implements Initializable{
                 tablaPujasAdmi.setItems(FXCollections.observableArrayList(pujasAsociadas));
             }
         });
+
+        actualizarSubastasHistorialAdmi.setOnAction(event -> {
+            ArrayList<Subasta> todasLasSubastas = gestorAdministrador.getSubastasSinRestriccion();
+            tablaSubastasHistorialAdmi.setItems(FXCollections.observableArrayList(todasLasSubastas));
+        });
+
+
     }
 
 
