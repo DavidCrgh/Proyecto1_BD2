@@ -2,6 +2,7 @@ package Gestores;
 
 
 import Modelo.Item;
+import Modelo.Puja;
 import Modelo.Subasta;
 import com.opencsv.CSVReader;
 import com.sun.org.apache.regexp.internal.RE;
@@ -510,6 +511,59 @@ public class GestorBD {
             e.printStackTrace();
         }
         return nombre;
+    }
+
+    public ArrayList<Puja> getPujas(int idSubasta){
+        ArrayList<Puja> pujas = new ArrayList<>();
+        String sqlPujas = "{call C##PRINCIPALSCHEMA.getPujas(?,?)}";
+
+        try{
+            CallableStatement ejecutarPujas = conexion.prepareCall(sqlPujas);
+            ejecutarPujas.setInt(1,idSubasta);
+            ejecutarPujas.registerOutParameter(2,OracleTypes.CURSOR);
+
+            ejecutarPujas.executeUpdate();
+
+            ResultSet pujasObtenidas = (ResultSet) ejecutarPujas.getObject(2);
+
+            while(pujasObtenidas.next()){
+                String idPuja = pujasObtenidas.getString("ID");
+                String comprador = pujasObtenidas.getString("ALIASCOMPRADOR");
+                String fechaHora = fechaFormateada(pujasObtenidas.getDate("FECHA_HORA"));
+                String montoOfrecido = String.valueOf(pujasObtenidas.getBigDecimal("PRECIO_OFERTA"));
+
+                pujas.add(new Puja(idPuja,comprador,fechaHora,montoOfrecido));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return pujas;
+    }
+
+    public ArrayList<Subasta> getSubastasSinRestriccion(){
+        ArrayList<Subasta> subastasSinRestriccion = new ArrayList<>();
+        String sqlSubastasSinRestriccion = "{call C##PRINCIPALSCHEMA.getSubastasSinRestriccion(?)}";
+
+        try{
+            CallableStatement ejecutarSubastasSin = conexion.prepareCall(sqlSubastasSinRestriccion);
+            ejecutarSubastasSin.registerOutParameter(1,OracleTypes.CURSOR);
+
+            ejecutarSubastasSin.executeUpdate();
+
+            ResultSet subastasObtenidas = (ResultSet) ejecutarSubastasSin.getObject(1);
+
+            while(subastasObtenidas.next()){
+                String idSubasta = subastasObtenidas.getString("ID");
+                String vendedor = subastasObtenidas.getString("ALIASVENDEDOR");
+                String precioBase = String.valueOf(subastasObtenidas.getBigDecimal("PRECIO_BASE"));
+                String subCategoria = subastasObtenidas.getString("DESCRIPCION");
+                subastasSinRestriccion.add(new Subasta(idSubasta,vendedor,precioBase,subCategoria));
+            }
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return subastasSinRestriccion;
     }
 
     public java.util.Date obtenerFecha(){

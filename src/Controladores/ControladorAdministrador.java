@@ -2,6 +2,7 @@ package Controladores;
 
 import Gestores.GestorBD;
 import Modelo.Item;
+import Modelo.Puja;
 import Modelo.Subasta;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -130,6 +131,41 @@ public class ControladorAdministrador implements Initializable{
     @FXML
     public ComboBox filtroSubCategoriaAdmi;
 
+    @FXML
+    public TableView tablaSubastasHistorialAdmi;
+
+    @FXML
+    public TableView tablaPujasAdmi;
+
+    @FXML
+    public TableColumn idSubastaHistorialAdmi;
+
+    @FXML
+    public TableColumn vendedorSubastaHistorialAdmi;
+
+    @FXML
+    public TableColumn precioBaseSubastaHistorialAdmi;
+
+    @FXML
+    public TableColumn subCategoriaSubastaHistorialAdmi;
+
+    @FXML
+    public TableColumn idPujasAdmi;
+
+    @FXML
+    public TableColumn compradorPujasAdmi;
+
+    @FXML
+    public TableColumn fechaHoraPujasAdmi;
+
+    @FXML
+    public TableColumn montoPujasAdmi;
+
+    @FXML
+    public Button mostrarDetallesHistorialAdmi;
+
+    @FXML
+    public Button mostrarHistorialAdmi;
 
     GestorBD gestorAdministrador;
 
@@ -146,7 +182,7 @@ public class ControladorAdministrador implements Initializable{
                     ||cedulaRegistro.getText().equals("")|| nombreApellidosRegistro.getText().equals("")
                     ||direccionRegistro.getText().equals("")||tipoUsuario.getSelectionModel().getSelectedItem() == null)
 
-                invocarAlerta("Se deben ingresar todos los datos del nuevo usuario");
+                gestorAdministrador.invocarAlerta("Se deben ingresar todos los datos del nuevo usuario");
             else{
 
                 String usuario = aliasRegistro.getText();
@@ -163,7 +199,7 @@ public class ControladorAdministrador implements Initializable{
 
         agregarTelefonoRegistro.setOnAction(event -> {
             if(nuevoTelefonoRegistro.getText().equals(""))
-                invocarAlerta("Debe ingresarse un número de teléfono");
+                gestorAdministrador.invocarAlerta("Debe ingresarse un número de teléfono");
             else{
                 listaTemporalTelefonos.add(nuevoTelefonoRegistro.getText());
                 nuevoTelefonoRegistro.clear();
@@ -172,7 +208,7 @@ public class ControladorAdministrador implements Initializable{
 
         eliminarTelefonoRegistro.setOnAction(event -> {
             if(telefonosRegistro.getSelectionModel().getSelectedItem()==null)
-                invocarAlerta("Debe ingresarse un teléfono para eliminar de la lista");
+                gestorAdministrador.invocarAlerta("Debe ingresarse un teléfono para eliminar de la lista");
             else{
                 listaTemporalTelefonos.remove(telefonosRegistro.getSelectionModel().getSelectedItem().toString());
             }
@@ -184,7 +220,7 @@ public class ControladorAdministrador implements Initializable{
 
         modificarUsuario.setOnAction(event -> { //TODO que pueda dejar varas vacias a la hora de modificar
             if(aliasModificar.getSelectionModel().getSelectedItem() == null)
-                invocarAlerta("Se debe seleccionar un usuario");
+               gestorAdministrador.invocarAlerta("Se debe seleccionar un usuario");
             else{
                 String aliasUsuario = aliasModificar.getSelectionModel().getSelectedItem().toString();
 
@@ -213,7 +249,7 @@ public class ControladorAdministrador implements Initializable{
 
         eliminarTelefonoUsuario.setOnAction(event -> {
             if(aliasModificar.getSelectionModel().getSelectedItem() == null || telefonosModificar.getSelectionModel().getSelectedItem() == null)
-                invocarAlerta("Se debe incluir el alias y un telefono");
+                gestorAdministrador.invocarAlerta("Se debe incluir el alias y un telefono");
             else{
                 gestorAdministrador.eliminarTelefonoUsuario(aliasModificar.getSelectionModel().getSelectedItem().toString(),
                         telefonosModificar.getSelectionModel().getSelectedItem().toString());
@@ -224,7 +260,7 @@ public class ControladorAdministrador implements Initializable{
         modificarTelefonoUsuario.setOnAction(event ->{
             if(aliasModificar.getSelectionModel().getSelectedItem()== null ||  nuevoTelefonoModificar.getText().equals("")
                     || telefonosModificar.getSelectionModel().getSelectedItem() ==null)
-                invocarAlerta("Se debe ingresar el antiguo telefono y el nuevo telefono para realizar la modificación");
+                gestorAdministrador.invocarAlerta("Se debe ingresar el antiguo telefono y el nuevo telefono para realizar la modificación");
             else {
                 String alias = aliasModificar.getSelectionModel().getSelectedItem().toString();
                 String nuevoTelefono = nuevoTelefonoModificar.getText();
@@ -239,7 +275,7 @@ public class ControladorAdministrador implements Initializable{
 
         agregarTelefonoModificar.setOnAction(event -> {
             if(nuevoTelefonoModificar.getText().equals("") || aliasModificar.getSelectionModel().getSelectedItem() == null)
-                invocarAlerta("Debe ingresar un número de teléfono y un usuario");
+                gestorAdministrador.invocarAlerta("Debe ingresar un número de teléfono y un usuario");
             else{
                 String aliasUsuario = aliasModificar.getSelectionModel().getSelectedItem().toString();
                 String nuevoTelefono = nuevoTelefonoModificar.getText();
@@ -255,7 +291,7 @@ public class ControladorAdministrador implements Initializable{
                 gestorAdministrador.agregarNuevasVariables(administradorLogueado,porcentaje,incrementoMin);
 
             }catch(Exception e){
-                invocarAlerta("El incremento mínimo y porcentaje de mejora deben ser número enteros");
+                gestorAdministrador.invocarAlerta("El incremento mínimo y porcentaje de mejora deben ser número enteros");
             }
             limpiarVariables();
         });
@@ -301,25 +337,37 @@ public class ControladorAdministrador implements Initializable{
             Item informacionItem = gestorAdministrador.extraerInformacionItem(subastaSeleccionada.getId());
             abrirVentanaDetallesItem(informacionItem);
         });
+
+        mostrarDetallesHistorialAdmi.setOnAction(event -> {
+            Subasta subastaHistorialSeleccionada = (Subasta) tablaSubastasHistorialAdmi.getSelectionModel().getSelectedItem();
+            Item infoItemHistorial = gestorAdministrador.extraerInformacionItem(subastaHistorialSeleccionada.getId());
+            abrirVentanaDetallesItem(infoItemHistorial);
+        });
+
+        mostrarHistorialAdmi.setOnAction(event -> {
+            if(tablaSubastasHistorialAdmi.getSelectionModel().getSelectedItem() == null)
+                gestorAdministrador.invocarAlerta("Debe seleccionar una subasta");
+            else{
+                Subasta subastaHistorialSeleccionada = (Subasta) tablaSubastasHistorialAdmi.getSelectionModel().getSelectedItem();
+                ArrayList<Puja> pujasAsociadas = gestorAdministrador.getPujas(Integer.parseInt(subastaHistorialSeleccionada.getId()));
+
+                tablaPujasAdmi.setItems(FXCollections.observableArrayList(pujasAsociadas));
+            }
+        });
     }
 
-    public void invocarAlerta(String mensaje) {
-
-        Alert nuevaAlerta = new Alert(Alert.AlertType.WARNING);
-        nuevaAlerta.setTitle("Error");
-        nuevaAlerta.setContentText(mensaje);
-        nuevaAlerta.showAndWait();
-
-    }
 
     public void datosDefecto(){
         Date fechaSystem = gestorAdministrador.obtenerFecha();
 
-        ArrayList<Subasta> subastasValidas = gestorAdministrador.getSubastas(new java.sql.Date(fechaSystem.getTime()),"DFH");//TODO para que busque todos los participantes
+        ArrayList<Subasta> todasLasSubastasActivas = gestorAdministrador.getSubastas(new java.sql.Date(fechaSystem.getTime()),"DFH");//TODO para que busque todos los participantes
+        ArrayList<Subasta> todasLasSubastas = gestorAdministrador.getSubastasSinRestriccion();
+
         ArrayList<String> categoriasElegir = gestorAdministrador.getCategorias();
         filtroCategoriaAdmi.setItems(FXCollections.observableArrayList(categoriasElegir));
 
-        tablaSubastasAdmi.setItems(FXCollections.observableArrayList(subastasValidas));
+        tablaSubastasAdmi.setItems(FXCollections.observableArrayList(todasLasSubastasActivas));
+        tablaSubastasHistorialAdmi.setItems(FXCollections.observableArrayList(todasLasSubastas));
 
         tipoUsuario.getItems().addAll("Administrador","Participante");
 
@@ -375,6 +423,16 @@ public class ControladorAdministrador implements Initializable{
         vendedorSubastaAdmi.setCellValueFactory(new PropertyValueFactory<Subasta,String>("vendedor"));
         precioBaseSubastaAdmi.setCellValueFactory(new PropertyValueFactory<Subasta,String>("precioBase"));
         subCategoriaSubastaAdmi.setCellValueFactory(new PropertyValueFactory<Subasta,String>("subCategoria"));
+
+        idSubastaHistorialAdmi.setCellValueFactory(new PropertyValueFactory<Subasta,String>("id"));
+        vendedorSubastaHistorialAdmi.setCellValueFactory(new PropertyValueFactory<Subasta,String>("vendedor"));
+        precioBaseSubastaHistorialAdmi.setCellValueFactory(new PropertyValueFactory<Subasta,String>("precioBase"));
+        subCategoriaSubastaHistorialAdmi.setCellValueFactory(new PropertyValueFactory<Subasta,String>("subCategoria"));
+
+        idPujasAdmi.setCellValueFactory(new PropertyValueFactory<Puja,String>("id"));
+        compradorPujasAdmi.setCellValueFactory(new PropertyValueFactory<Puja,String>("comprador"));
+        fechaHoraPujasAdmi.setCellValueFactory(new PropertyValueFactory<Puja,String>("fechaHora"));
+        montoPujasAdmi.setCellValueFactory(new PropertyValueFactory<Puja,String>("monto"));
     }
 
     public void abrirVentanaDetallesItem(Item infoItem){

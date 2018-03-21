@@ -26,7 +26,7 @@
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b0d083" height="40.0" stroke="BLACK" strokeType="INSIDE" width="1026.0" BorderPane.alignment="CENTER" />
          </top>
          <center>
-            <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+            <TabPane prefHeight="353.0" prefWidth="1026.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
               <tabs>
                 <Tab text="Control de Usuarios">
                   <content>
@@ -179,7 +179,7 @@
                   </Tab>
                   <Tab text="Consultas">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="482.0" prefWidth="1077.0">
                            <children>
                               <Separator layoutX="510.0" layoutY="29.0" orientation="VERTICAL" prefHeight="424.0" prefWidth="2.0" />
                               <Label layoutX="124.0" layoutY="29.0" text="Subastas Por Categoría-SubCategoría ">
@@ -193,6 +193,7 @@
                                   <TableColumn fx:id="vendedorSubastaAdmi" prefWidth="75.0" text="Vendedor" />
                                     <TableColumn fx:id="precioBaseSubastaAdmi" prefWidth="75.0" text="Precio Base" />
                                     <TableColumn fx:id="subCategoriaSubastaAdmi" prefWidth="258.0" text="SubCategoría" />
+                                    <TableColumn fx:id="subCategoriaSubastaAdmi1" prefWidth="258.0" text="SubCategoría" />
                                 </columns>
                               </TableView>
                               <Button fx:id="sinFiltroAdmi" layoutX="14.0" layoutY="277.0" mnemonicParsing="false" text="Sin Filtro">
@@ -223,6 +224,49 @@
                               <ComboBox fx:id="filtroCategoriaAdmi" layoutX="250.0" layoutY="353.0" prefWidth="150.0" />
                               <ComboBox fx:id="filtroSubCategoriaAdmi" layoutX="250.0" layoutY="394.0" prefWidth="150.0" />
                               <Button fx:id="filtrarAdmi" layoutX="230.0" layoutY="441.0" mnemonicParsing="false" text="Filtrar">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Label layoutX="708.0" layoutY="29.0" text="Historial de Pujas">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <TableView fx:id="tablaSubastasHistorialAdmi" layoutX="524.0" layoutY="95.0" prefHeight="139.0" prefWidth="484.0">
+                                 <columns>
+                                    <TableColumn fx:id="idSubastaHistorialAdmi" prefWidth="75.0" text="ID" />
+                                    <TableColumn fx:id="vendedorSubastaHistorialAdmi" prefWidth="75.0" text="Vendedor" />
+                                    <TableColumn fx:id="precioBaseSubastaHistorialAdmi" prefWidth="75.0" text="Precio Base" />
+                                    <TableColumn fx:id="subCategoriaSubastaHistorialAdmi" prefWidth="258.0" text="SubCategoría" />
+                                    <TableColumn fx:id="subCategoriaSubastaAdmi11" prefWidth="258.0" text="SubCategoría" />
+                                 </columns>
+                              </TableView>
+                              <TableView fx:id="tablaPujasAdmi" layoutX="524.0" layoutY="275.0" prefHeight="155.0" prefWidth="484.0">
+                                 <columns>
+                                    <TableColumn fx:id="idPujasAdmi" prefWidth="75.0" text="ID" />
+                                    <TableColumn fx:id="compradorPujasAdmi" prefWidth="75.0" text="Comprador" />
+                                    <TableColumn fx:id="fechaHoraPujasAdmi" prefWidth="131.0" text="Fecha y Hora" />
+                                    <TableColumn fx:id="montoPujasAdmi" prefWidth="202.0" text="Monto Ofrecido" />
+                                    <TableColumn fx:id="subCategoriaSubastaAdmi111" prefWidth="258.0" text="SubCategoría" />
+                                 </columns>
+                              </TableView>
+                              <Label layoutX="524.0" layoutY="254.0" text="Pujas Realizadas">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="524.0" layoutY="75.0" text="Subastas">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="mostrarHistorialAdmi" layoutX="903.0" layoutY="441.0" mnemonicParsing="false" text="Mostrar Historial">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="mostrarDetallesHistorialAdmi" layoutX="898.0" layoutY="234.0" mnemonicParsing="false" text="Mostrar Detalles">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
