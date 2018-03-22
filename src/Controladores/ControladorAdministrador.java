@@ -398,11 +398,12 @@ public class ControladorAdministrador implements Initializable{
             else{
                 String aliasUsuario = aliasUsuarioHistorial.getSelectionModel().getSelectedItem().toString();
                 if(opcionVentas.isSelected()){
-                    ArrayList<ConsultasHistorial> consultasObtenidas = gestorAdministrador.obtenerHistorialSubastas(aliasUsuario);
-                    tablaHistorialUsuarios.setItems(FXCollections.observableArrayList(consultasObtenidas));
+                    ArrayList<ConsultasHistorial> consultasObtenidasSubastas = gestorAdministrador.obtenerHistorialSubastas(aliasUsuario);
+                    tablaHistorialUsuarios.setItems(FXCollections.observableArrayList(consultasObtenidasSubastas));
                 }
                 else{
-                    gestorAdministrador.obtenerHistorialPujas(aliasUsuario);
+                    ArrayList<ConsultasHistorial> consultasObtenidasPujas = gestorAdministrador.obtenerHistorialPujas(aliasUsuario);
+                    tablaHistorialUsuarios.setItems(FXCollections.observableArrayList(consultasObtenidasPujas));
                 }
             }
         });
