@@ -104,7 +104,7 @@ public class ControladorLogin implements Initializable {
                 controladorAdministrador.administradorLogueado = usuarioAdministrador.getText(); // Para tener guardado el alias en la clase del controlador
                 controladorAdministrador.datosDefecto();
                 break;
-            case "Participante"://TODO: La interfaz del participante y su controlador asociado.
+            case "Participante":
                 ControladorParticipante controladorParticipante = loader.getController();
                 controladorParticipante.gestorParticipante = gestorBase;
                 controladorParticipante.participanteLogueado = usuarioParticipante.getText();

@@ -203,7 +203,10 @@ public class ControladorParticipante implements Initializable {
         configurarColumnas();
 
         subastarItem.setOnAction(event -> {
-            if(false){ //TODO condicion para verificar que todos los campos esten llenos
+            if(fechaInicio.getValue() == null || fechaFin.getValue() == null || horaInicio.getText().equals("") || minutoInicio.getText().equals("") ||
+                    segundoInicio.getText().equals("") || horaFin.getText().equals("") || minutoFin.getText().equals("") || segundoFin.getText().equals("") ||
+                    descripcionItem.getText().equals("") || detallesEntrega.getText().equals("") || precioBaseSubasta.getText().equals("") || subCategoriaSubasta.getSelectionModel().getSelectedItem() == null){
+                gestorParticipante.invocarAlerta("Debe ingresar todos los datos para subastar un ítem.");
 
             }else{
                 //Obtiene todos los datos de los controles de la interfaz

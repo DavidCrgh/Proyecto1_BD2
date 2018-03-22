@@ -250,7 +250,7 @@ public class ControladorAdministrador implements Initializable{
             telefonosRegistro.setItems(FXCollections.observableArrayList(listaTemporalTelefonos));
         });
 
-        modificarUsuario.setOnAction(event -> { //TODO que pueda dejar varas vacias a la hora de modificar
+        modificarUsuario.setOnAction(event -> {
             if(aliasModificar.getSelectionModel().getSelectedItem() == null)
                gestorAdministrador.invocarAlerta("Se debe seleccionar un usuario");
             else{
@@ -414,7 +414,7 @@ public class ControladorAdministrador implements Initializable{
     public void datosDefecto(){
         Date fechaSystem = gestorAdministrador.obtenerFecha();
 
-        ArrayList<Subasta> todasLasSubastasActivas = gestorAdministrador.getSubastas(new java.sql.Date(fechaSystem.getTime()),"DFH");//TODO para que busque todos los participantes
+        ArrayList<Subasta> todasLasSubastasActivas = gestorAdministrador.getSubastas(new java.sql.Date(fechaSystem.getTime()),"DFH");
         ArrayList<Subasta> todasLasSubastas = gestorAdministrador.getSubastasSinRestriccion();
         ArrayList<String> aliasUsuarios = gestorAdministrador.devolverUsuarios(administradorLogueado,0);
 
