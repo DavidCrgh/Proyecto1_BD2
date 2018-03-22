@@ -1,6 +1,7 @@
 package Gestores;
 
 
+import Modelo.ConsultasHistorial;
 import Modelo.Item;
 import Modelo.Puja;
 import Modelo.Subasta;
@@ -579,6 +580,41 @@ public class GestorBD {
         }
 
         return fechaSistemaReal;
+    }
+
+    public ArrayList<ConsultasHistorial> obtenerHistorialSubastas(String aliasUsuario){
+        ArrayList<ConsultasHistorial> consultasHistorial = new ArrayList<>();
+        String sqlSubastasHistorial = "{call C##PRINCIPALSCHEMA.obtenerHistorialSubastas(?,?)}";
+
+        try{
+            CallableStatement ejecutarSubastasHistorial = conexion.prepareCall(sqlSubastasHistorial);
+            ejecutarSubastasHistorial.setString(1,aliasUsuario);
+            ejecutarSubastasHistorial.registerOutParameter(2,OracleTypes.CURSOR);
+
+            ejecutarSubastasHistorial.executeUpdate();
+
+            ResultSet tuplasSubastas = (ResultSet) ejecutarSubastasHistorial.getObject(2);
+
+            while(tuplasSubastas.next()){
+                String descripcionItem = tuplasSubastas.getString("DESCRIPCION");
+                String precioBase = String.valueOf(tuplasSubastas.getBigDecimal("PRECIO_BASE"));
+                String precioFinal =  (String.valueOf(tuplasSubastas.getBigDecimal("PRECIO_OFERTA")).equals("null"))? "No Disponible": String.valueOf(tuplasSubastas.getBigDecimal("PRECIO_OFERTA"));
+
+                consultasHistorial.add(new ConsultasHistorial(descripcionItem,precioBase,precioFinal));
+
+            }
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return consultasHistorial;
+    }
+
+    public ArrayList<ConsultasHistorial> obtenerHistorialPujas(String aliasUsuario){
+        ArrayList consultasHistorial = new ArrayList();
+
+        return consultasHistorial;
     }
 /*
     public void cargarCat() {

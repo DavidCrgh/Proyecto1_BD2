@@ -195,6 +195,9 @@ public class ControladorAdministrador implements Initializable{
     @FXML
     public TableColumn precioFinalHistorialUsuarios;
 
+    @FXML
+    public Button mostrarHistorialUsuariosAdmi;
+
 
     GestorBD gestorAdministrador;
 
@@ -388,6 +391,22 @@ public class ControladorAdministrador implements Initializable{
             ArrayList<Subasta> todasLasSubastas = gestorAdministrador.getSubastasSinRestriccion();
             tablaSubastasHistorialAdmi.setItems(FXCollections.observableArrayList(todasLasSubastas));
         });
+
+        mostrarHistorialUsuariosAdmi.setOnAction(event -> {
+            if(aliasUsuarioHistorial.getSelectionModel().getSelectedItem() == null)
+                gestorAdministrador.invocarAlerta("Se debe seleccionar un usuario");
+            else{
+                String aliasUsuario = aliasUsuarioHistorial.getSelectionModel().getSelectedItem().toString();
+                if(opcionVentas.isSelected()){
+                    ArrayList<ConsultasHistorial> consultasObtenidas = gestorAdministrador.obtenerHistorialSubastas(aliasUsuario);
+                    tablaHistorialUsuarios.setItems(FXCollections.observableArrayList(consultasObtenidas));
+                }
+                else{
+                    gestorAdministrador.obtenerHistorialPujas(aliasUsuario);
+                }
+            }
+        });
+
     }
 
 
