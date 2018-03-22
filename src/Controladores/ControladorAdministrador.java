@@ -1,6 +1,7 @@
 package Controladores;
 
 import Gestores.GestorBD;
+import Modelo.ConsultasHistorial;
 import Modelo.Item;
 import Modelo.Puja;
 import Modelo.Subasta;
@@ -169,6 +170,31 @@ public class ControladorAdministrador implements Initializable{
 
     @FXML
     public Button actualizarSubastasHistorialAdmi;
+
+    @FXML
+    public ToggleGroup grupoBotones;
+
+    @FXML
+    public RadioButton opcionVentas;
+
+    @FXML
+    public RadioButton opcionPujas;
+
+    @FXML
+    public ComboBox aliasUsuarioHistorial;
+
+    @FXML
+    public TableView tablaHistorialUsuarios;
+
+    @FXML
+    public TableColumn itemHistorialUsuarios;
+
+    @FXML
+    public TableColumn precioBaseHistorialUsuarios;
+
+    @FXML
+    public TableColumn precioFinalHistorialUsuarios;
+
 
     GestorBD gestorAdministrador;
 
@@ -372,6 +398,7 @@ public class ControladorAdministrador implements Initializable{
 
         ArrayList<Subasta> todasLasSubastasActivas = gestorAdministrador.getSubastas(new java.sql.Date(fechaSystem.getTime()),"DFH");//TODO para que busque todos los participantes
         ArrayList<Subasta> todasLasSubastas = gestorAdministrador.getSubastasSinRestriccion();
+        ArrayList<String> aliasUsuarios = gestorAdministrador.devolverUsuarios(administradorLogueado,0);
 
         ArrayList<String> categoriasElegir = gestorAdministrador.getCategorias();
         filtroCategoriaAdmi.setItems(FXCollections.observableArrayList(categoriasElegir));
@@ -380,6 +407,7 @@ public class ControladorAdministrador implements Initializable{
         tablaSubastasHistorialAdmi.setItems(FXCollections.observableArrayList(todasLasSubastas));
 
         tipoUsuario.getItems().addAll("Administrador","Participante");
+        aliasUsuarioHistorial.setItems(FXCollections.observableArrayList(aliasUsuarios));
 
     }
 
@@ -443,6 +471,10 @@ public class ControladorAdministrador implements Initializable{
         compradorPujasAdmi.setCellValueFactory(new PropertyValueFactory<Puja,String>("comprador"));
         fechaHoraPujasAdmi.setCellValueFactory(new PropertyValueFactory<Puja,String>("fechaHora"));
         montoPujasAdmi.setCellValueFactory(new PropertyValueFactory<Puja,String>("monto"));
+
+        itemHistorialUsuarios.setCellValueFactory(new PropertyValueFactory<ConsultasHistorial,String>("descripcionItem"));
+        precioBaseHistorialUsuarios.setCellValueFactory(new PropertyValueFactory<ConsultasHistorial,String>("precioBase"));
+        precioFinalHistorialUsuarios.setCellValueFactory(new PropertyValueFactory<ConsultasHistorial,String>("precioFinal"));
     }
 
     public void abrirVentanaDetallesItem(Item infoItem){

@@ -4,6 +4,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -11,6 +12,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -272,6 +274,51 @@
                                  </font>
                               </Button>
                               <Button fx:id="actualizarSubastasHistorialAdmi" layoutX="797.0" layoutY="234.0" mnemonicParsing="false" text="Actualizar">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+                  <Tab text="Consultas">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Separator layoutX="510.0" layoutY="29.0" orientation="VERTICAL" prefHeight="424.0" prefWidth="2.0" />
+                              <Label layoutX="181.0" layoutY="19.0" text="Historial de Usuarios ">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <TableView fx:id="tablaHistorialUsuarios" layoutX="14.0" layoutY="133.0" prefHeight="200.0" prefWidth="486.0">
+                                <columns>
+                                  <TableColumn fx:id="itemHistorialUsuarios" prefWidth="142.0" text="Ítem" />
+                                  <TableColumn fx:id="precioBaseHistorialUsuarios" prefWidth="162.0" text="Precio Base" />
+                                    <TableColumn fx:id="precioFinalHistorialUsuarios" prefWidth="181.0" text="Precio Final" />
+                                </columns>
+                              </TableView>
+                              <ComboBox fx:id="aliasUsuarioHistorial" layoutX="177.0" layoutY="80.0" prefWidth="150.0" />
+                              <RadioButton fx:id="opcionVentas" layoutX="366.0" layoutY="84.0" mnemonicParsing="false" selected="true" text="Ventas">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="grupoBotones" />
+                                 </toggleGroup>
+                              </RadioButton>
+                              <RadioButton fx:id="opcionPujas" layoutX="366.0" layoutY="105.0" mnemonicParsing="false" text="Pujas Ganadoras" toggleGroup="$grupoBotones">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </RadioButton>
+                              <Button layoutX="14.0" layoutY="342.0" mnemonicParsing="false" text="Mostrar Historial">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Button layoutX="424.0" layoutY="342.0" mnemonicParsing="false" text="Actualizar ">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
