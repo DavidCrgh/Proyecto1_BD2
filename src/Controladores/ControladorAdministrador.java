@@ -388,8 +388,6 @@ public class ControladorAdministrador implements Initializable{
             ArrayList<Subasta> todasLasSubastas = gestorAdministrador.getSubastasSinRestriccion();
             tablaSubastasHistorialAdmi.setItems(FXCollections.observableArrayList(todasLasSubastas));
         });
-
-
     }
 
 

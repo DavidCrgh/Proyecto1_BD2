@@ -119,7 +119,7 @@ public class ControladorParticipante implements Initializable {
     @FXML
     public Button filtrar;
 
-    //Ambos
+    //Consultas
 
     @FXML
     public TableView tablaSubastasHistorialPart;
@@ -159,6 +159,25 @@ public class ControladorParticipante implements Initializable {
 
     @FXML
     public Button mostrarHistorialPujasPart;
+
+    //Historial de Usuarios
+    @FXML
+    public ComboBox listaUsuarios;
+
+    @FXML
+    public ToggleGroup grupoRadioButtons;
+
+    @FXML
+    public RadioButton opcionVentas;
+
+    @FXML
+    public RadioButton opcionPujas;
+
+    @FXML
+    public Button verHistorial;
+
+    @FXML
+    public Button actualizar;
 
     GestorBD gestorParticipante;
 
@@ -320,22 +339,27 @@ public class ControladorParticipante implements Initializable {
             }
         });
 
+        actualizar.setOnAction(event -> {
+            ArrayList<String> usuarios = gestorParticipante.devolverUsuarios("",0);
+            listaUsuarios.setItems(FXCollections.observableArrayList(usuarios));
+        });
+
 
     }
 
     public void datosDefecto(){
-
         Date fechaSystem = gestorParticipante.obtenerFecha();
 
         ArrayList<Subasta> todasLasSubastas = gestorParticipante.getSubastasSinRestriccion();
         ArrayList<Subasta> subastasValidas = gestorParticipante.getSubastas(new java.sql.Date(fechaSystem.getTime()),participanteLogueado);
         ArrayList<String> categoriasElegir = gestorParticipante.getCategorias();
+        ArrayList<String> usuarios = gestorParticipante.devolverUsuarios("",0);
 
         tablaSubastasHistorialPart.setItems(FXCollections.observableArrayList(todasLasSubastas));
         categoriaSubasta.setItems(FXCollections.observableArrayList(categoriasElegir));
         filtroCategoria.setItems(FXCollections.observableArrayList(categoriasElegir));
         tablaPuja.setItems(FXCollections.observableArrayList(subastasValidas));
-
+        listaUsuarios.setItems(FXCollections.observableArrayList(usuarios));
     }
 
     public void setSubCategoriaSubasta(ArrayList<String> subCategorias){
