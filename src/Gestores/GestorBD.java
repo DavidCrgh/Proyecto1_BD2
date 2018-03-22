@@ -611,10 +611,32 @@ public class GestorBD {
         return consultasHistorial;
     }
 
-    public ArrayList<ConsultasHistorial> obtenerHistorialPujas(String aliasUsuario){
-        ArrayList consultasHistorial = new ArrayList();
+    public ArrayList<ConsultasHistorial> obtenerHistorialPujas(String usuario){
+        ArrayList<ConsultasHistorial> resultadoHistorialPujas = null;
+        try {
+            String sqlHistorialPujas = "{call C##PRINCIPALSCHEMA.obtenerHistorialPujas(?,?)}";
+            resultadoHistorialPujas = new ArrayList<>();
+            CallableStatement historialPujas = conexion.prepareCall(sqlHistorialPujas);
+            historialPujas.setString(1, usuario);
+            historialPujas.registerOutParameter(2, OracleTypes.CURSOR);
 
-        return consultasHistorial;
+            historialPujas.executeUpdate();
+
+            ResultSet pujasDevueltas = (ResultSet) historialPujas.getObject(2);
+
+            while (pujasDevueltas.next()){
+                ConsultasHistorial tupla =
+                        new ConsultasHistorial(
+                                pujasDevueltas.getString("DESCRIPCION"),
+                                pujasDevueltas.getString("PRECIO_BASE"),
+                                pujasDevueltas.getString("PRECIO_OFERTA")
+                        );
+                resultadoHistorialPujas.add(tupla);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultadoHistorialPujas;
     }
 /*
     public void cargarCat() {

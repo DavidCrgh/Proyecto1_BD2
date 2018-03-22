@@ -296,11 +296,11 @@
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
                   <ComboBox fx:id="listaUsuarios" layoutX="94.0" layoutY="71.0" prefHeight="25.0" prefWidth="189.0" />
-                  <TableView layoutX="23.0" layoutY="126.0" prefHeight="356.0" prefWidth="561.0">
+                  <TableView fx:id="historialUsuarios" layoutX="23.0" layoutY="126.0" prefHeight="356.0" prefWidth="561.0">
                     <columns>
-                      <TableColumn prefWidth="265.0" text="Ítem" />
-                      <TableColumn prefWidth="155.0" text="Precio Base" />
-                        <TableColumn prefWidth="155.0" text="Precio Final" />
+                      <TableColumn fx:id="itemHistorial" prefWidth="265.0" text="Ítem" />
+                      <TableColumn fx:id="precioBaseHistorial" prefWidth="155.0" text="Precio Base" />
+                        <TableColumn fx:id="precioFinalHistorial" prefWidth="155.0" text="Precio Final" />
                     </columns>
                   </TableView>
                   <Label layoutX="235.0" layoutY="28.0" text="Historial de Usuarios">

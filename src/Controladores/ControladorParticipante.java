@@ -1,6 +1,7 @@
 package Controladores;
 
 import Gestores.GestorBD;
+import Modelo.ConsultasHistorial;
 import Modelo.Item;
 import Modelo.Puja;
 import Modelo.Subasta;
@@ -165,6 +166,18 @@ public class ControladorParticipante implements Initializable {
     public ComboBox listaUsuarios;
 
     @FXML
+    public TableView historialUsuarios;
+
+    @FXML
+    public TableColumn itemHistorial;
+
+    @FXML
+    public TableColumn precioBaseHistorial;
+
+    @FXML
+    public TableColumn precioFinalHistorial;
+
+    @FXML
     public ToggleGroup grupoRadioButtons;
 
     @FXML
@@ -256,6 +269,7 @@ public class ControladorParticipante implements Initializable {
                     gestorParticipante.pujarPuja(participanteLogueado, idItem, oferta, new java.sql.Date(fechaSystem.getTime()));
                 }
             }
+            nuevaOfertaPuja.clear();
         });
 
         categoriaSubasta.setOnAction(event -> {
@@ -344,7 +358,21 @@ public class ControladorParticipante implements Initializable {
             listaUsuarios.setItems(FXCollections.observableArrayList(usuarios));
         });
 
-
+        verHistorial.setOnAction(event -> {
+            if(listaUsuarios.getSelectionModel().getSelectedItem() == null)
+                gestorParticipante.invocarAlerta("Se debe seleccionar un usuario");
+            else{
+                String aliasUsuario = listaUsuarios.getSelectionModel().getSelectedItem().toString();
+                if(opcionVentas.isSelected()){
+                    ArrayList<ConsultasHistorial> consultasObtenidas = gestorParticipante.obtenerHistorialSubastas(aliasUsuario);
+                    historialUsuarios.setItems(FXCollections.observableArrayList(consultasObtenidas));
+                }
+                else{
+                    ArrayList<ConsultasHistorial> consultasObtenidas =  gestorParticipante.obtenerHistorialPujas(aliasUsuario);
+                    historialUsuarios.setItems(FXCollections.observableArrayList(consultasObtenidas));
+                }
+            }
+        });
     }
 
     public void datosDefecto(){
@@ -383,6 +411,9 @@ public class ControladorParticipante implements Initializable {
         fechaHoraPujasPart.setCellValueFactory(new PropertyValueFactory<Puja,String>("fechaHora"));
         montoPujasPart.setCellValueFactory(new PropertyValueFactory<Puja,String>("monto"));
 
+        itemHistorial.setCellValueFactory(new PropertyValueFactory<ConsultasHistorial, String>("descripcionItem"));
+        precioBaseHistorial.setCellValueFactory(new PropertyValueFactory<ConsultasHistorial, String>("precioBase"));
+        precioFinalHistorial.setCellValueFactory(new PropertyValueFactory<ConsultasHistorial, String>("precioFinal"));
     }
 
     public void abrirVentanaDetallesItem(Item infoItem){
