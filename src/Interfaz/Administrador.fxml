@@ -21,7 +21,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="551.0" prefWidth="1026.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.ControladorAdministrador">
+<AnchorPane prefHeight="551.0" prefWidth="1026.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.ControladorAdministrador">
    <children>
       <BorderPane layoutY="-1.0" prefHeight="551.0" prefWidth="1026.0">
          <top>
@@ -195,7 +195,6 @@
                                   <TableColumn fx:id="vendedorSubastaAdmi" prefWidth="75.0" text="Vendedor" />
                                     <TableColumn fx:id="precioBaseSubastaAdmi" prefWidth="75.0" text="Precio Base" />
                                     <TableColumn fx:id="subCategoriaSubastaAdmi" prefWidth="258.0" text="SubCategoría" />
-                                    <TableColumn fx:id="subCategoriaSubastaAdmi1" prefWidth="258.0" text="SubCategoría" />
                                 </columns>
                               </TableView>
                               <Button fx:id="sinFiltroAdmi" layoutX="14.0" layoutY="277.0" mnemonicParsing="false" text="Sin Filtro">
@@ -241,7 +240,6 @@
                                     <TableColumn fx:id="vendedorSubastaHistorialAdmi" prefWidth="75.0" text="Vendedor" />
                                     <TableColumn fx:id="precioBaseSubastaHistorialAdmi" prefWidth="75.0" text="Precio Base" />
                                     <TableColumn fx:id="subCategoriaSubastaHistorialAdmi" prefWidth="258.0" text="SubCategoría" />
-                                    <TableColumn fx:id="subCategoriaSubastaAdmi11" prefWidth="258.0" text="SubCategoría" />
                                  </columns>
                               </TableView>
                               <TableView fx:id="tablaPujasAdmi" layoutX="524.0" layoutY="275.0" prefHeight="155.0" prefWidth="484.0">
