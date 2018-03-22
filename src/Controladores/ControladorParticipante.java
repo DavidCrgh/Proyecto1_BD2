@@ -222,6 +222,8 @@ public class ControladorParticipante implements Initializable {
                 BigDecimal precioBase = new BigDecimal(subastaSeleccionada.getPrecioBase());
                 BigDecimal oferta = new BigDecimal(nuevaOfertaPuja.getText());
 
+                //TODO validar que puja sea hecha en periodo valido
+
                 if(precioBase.compareTo(oferta) == 1){
                     gestorParticipante.invocarAlerta("La oferta debe ser mayor al precio base");
 
