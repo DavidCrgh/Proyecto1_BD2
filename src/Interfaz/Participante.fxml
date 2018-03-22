@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="556.0" prefWidth="605.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.ControladorParticipante">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="556.0" prefWidth="605.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.ControladorParticipante">
   <tabs>
     <Tab text="Vendedor">
       <content>
@@ -179,6 +179,9 @@
                         <TableColumn fx:id="columnaPrecioBasePuja" prefWidth="75.0" text="Precio Base" />
                         <TableColumn fx:id="columnaSubCategoriaPuja" prefWidth="270.0" text="SubCategoria" />
                     </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
                   </TableView>
                   <Button fx:id="mostrarDetallesPuja" layoutX="441.0" layoutY="247.0" mnemonicParsing="false" text="Mostrar Detalles">
                      <font>
@@ -244,8 +247,8 @@
                     <columns>
                       <TableColumn fx:id="idSubastasHistorialPart" prefWidth="75.0" text="ID" />
                       <TableColumn fx:id="vendedorSubastasHistorialPart" prefWidth="75.0" text="Vendedor" />
-                        <TableColumn fx:id="precioBaseSubastasHistorialPart" prefWidth="75.0" text="Precio Base" />
-                        <TableColumn fx:id="subCategoriaSubastasHistorialPart" prefWidth="75.0" text="SubCategoría" />
+                        <TableColumn fx:id="precioBaseSubastasHistorialPart" minWidth="0.0" prefWidth="48.0" text="Precio Base" />
+                        <TableColumn fx:id="subCategoriaSubastasHistorialPart" prefWidth="229.0" text="SubCategoría" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
