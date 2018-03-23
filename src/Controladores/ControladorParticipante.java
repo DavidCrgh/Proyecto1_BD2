@@ -252,24 +252,30 @@ public class ControladorParticipante implements Initializable {
             if(tablaPuja.getSelectionModel().getSelectedItem() == null || nuevaOfertaPuja.getText().equals(""))
                 gestorParticipante.invocarAlerta("Se debe seleccionar una puja y una oferta válidas");
 
-            else{
+            else {
                 Subasta subastaSeleccionada = (Subasta) tablaPuja.getSelectionModel().getSelectedItem();
-                BigDecimal precioBase = new BigDecimal(subastaSeleccionada.getPrecioBase());
-                BigDecimal oferta = new BigDecimal(nuevaOfertaPuja.getText());
-
-                //TODO validar que puja sea hecha en periodo valido
-
-                if(precioBase.compareTo(oferta) == 1){
-                    gestorParticipante.invocarAlerta("La oferta debe ser mayor al precio base");
-
-                }
-                else {
-                    Date fechaSystem = gestorParticipante.obtenerFecha();
+                if (fechaPujaNoValida(subastaSeleccionada.getId())) {
+                    gestorParticipante.invocarAlerta("El tiempo para pujar ha finalizado");
+                    nuevaOfertaPuja.clear();
+                } else {
 
 
-                    int idItem = gestorParticipante.buscarIdItem(Integer.parseInt(subastaSeleccionada.getId()));
+                    BigDecimal precioBase = new BigDecimal(subastaSeleccionada.getPrecioBase());
+                    BigDecimal oferta = new BigDecimal(nuevaOfertaPuja.getText());
 
-                    gestorParticipante.pujarPuja(participanteLogueado, idItem, oferta, new java.sql.Date(fechaSystem.getTime()));
+                    //TODO validar que puja sea hecha en periodo valido
+
+                    if (precioBase.compareTo(oferta) == 1) {
+                        gestorParticipante.invocarAlerta("La oferta debe ser mayor al precio base");
+
+                    } else {
+                        Date fechaSystem = gestorParticipante.obtenerFecha();
+
+
+                        int idItem = gestorParticipante.buscarIdItem(Integer.parseInt(subastaSeleccionada.getId()));
+
+                        gestorParticipante.pujarPuja(participanteLogueado, idItem, oferta, new java.sql.Date(fechaSystem.getTime()));
+                    }
                 }
             }
             nuevaOfertaPuja.clear();
@@ -453,4 +459,10 @@ public class ControladorParticipante implements Initializable {
         precioBaseSubasta.clear();
     }
 
+    public boolean fechaPujaNoValida(String idSubasta){
+        Date fechaSistema = gestorParticipante.obtenerFecha();
+        Date tiempoFinSubasta = gestorParticipante.obtenerTiempoFin(Integer.parseInt(idSubasta));
+
+        return fechaSistema.after(tiempoFinSubasta) ;
+    }
 }

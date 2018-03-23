@@ -638,7 +638,40 @@ public class GestorBD {
         }
         return resultadoHistorialPujas;
     }
-/*
+
+    public java.util.Date obtenerTiempoFin(int idSubasta){
+        String sqlTiempoFin = "{call C##PRINCIPALSCHEMA.obtenerTiempoFin(?,?)}";
+        java.util.Date tiempoFin = null;
+        try{
+            CallableStatement ejecutarTiempoFin  = conexion.prepareCall(sqlTiempoFin);
+            ejecutarTiempoFin.setInt(1,idSubasta);
+            ejecutarTiempoFin.registerOutParameter(2,OracleTypes.CURSOR);
+
+            ejecutarTiempoFin.executeUpdate();
+
+            ResultSet tiempoObtenido = (ResultSet)ejecutarTiempoFin.getObject(2);
+            while (tiempoObtenido.next()){
+                tiempoFin = tiempoObtenido.getDate("TIEMPOFIN");
+            }
+
+            if(tiempoFin!= null) {
+                DateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+                String fechaFin= formatoFecha.format(tiempoFin);
+                tiempoFin = formatoFecha.parse(fechaFin);
+
+                System.out.println(fechaFin);
+
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return tiempoFin;
+
+    }
+
+    /*
     public void cargarCat() {
         establecerConexionSuperUsuario();
 
