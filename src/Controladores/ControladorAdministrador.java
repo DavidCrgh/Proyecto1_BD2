@@ -435,7 +435,8 @@ public class ControladorAdministrador implements Initializable{
         cedulaRegistro.clear();
         nombreApellidosRegistro.clear();
         nuevoTelefonoRegistro.clear();
-        telefonosRegistro.getItems().clear();
+        listaTemporalTelefonos.clear();
+        telefonosRegistro.setItems(FXCollections.observableArrayList(listaTemporalTelefonos));
         direccionRegistro.clear();
         tipoUsuario.getSelectionModel().clearSelection();
     }
