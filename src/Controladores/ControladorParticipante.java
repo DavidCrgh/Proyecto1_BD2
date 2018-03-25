@@ -1,10 +1,7 @@
 package Controladores;
 
 import Gestores.GestorBD;
-import Modelo.ConsultasHistorial;
-import Modelo.Item;
-import Modelo.Puja;
-import Modelo.Subasta;
+import Modelo.*;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -176,6 +173,18 @@ public class ControladorParticipante implements Initializable {
 
     @FXML
     public TableColumn precioFinalHistorial;
+
+    @FXML
+    public TableView comentariosUsuarios;
+
+    @FXML
+    public TableColumn autorComentario;
+
+    @FXML
+    public TableColumn itemComentario;
+
+    @FXML
+    public TableColumn comentarioComentario;
 
     @FXML
     public ToggleGroup grupoRadioButtons;
@@ -375,10 +384,14 @@ public class ControladorParticipante implements Initializable {
                 if(opcionVentas.isSelected()){
                     ArrayList<ConsultasHistorial> consultasObtenidas = gestorParticipante.obtenerHistorialSubastas(aliasUsuario);
                     historialUsuarios.setItems(FXCollections.observableArrayList(consultasObtenidas));
+                    ArrayList<Comentario> comentariosObtenidos = gestorParticipante.obtenerComentariosSobreUsuario(aliasUsuario, "Vendedor");
+                    comentariosUsuarios.setItems(FXCollections.observableArrayList(comentariosObtenidos));
                 }
                 else{
                     ArrayList<ConsultasHistorial> consultasObtenidas =  gestorParticipante.obtenerHistorialPujas(aliasUsuario);
                     historialUsuarios.setItems(FXCollections.observableArrayList(consultasObtenidas));
+                    ArrayList<Comentario> comentariosObtenidos = gestorParticipante.obtenerComentariosSobreUsuario(aliasUsuario, "Comprador");
+                    comentariosUsuarios.setItems(FXCollections.observableArrayList(comentariosObtenidos));
                 }
             }
         });
@@ -423,6 +436,10 @@ public class ControladorParticipante implements Initializable {
         itemHistorial.setCellValueFactory(new PropertyValueFactory<ConsultasHistorial, String>("descripcionItem"));
         precioBaseHistorial.setCellValueFactory(new PropertyValueFactory<ConsultasHistorial, String>("precioBase"));
         precioFinalHistorial.setCellValueFactory(new PropertyValueFactory<ConsultasHistorial, String>("precioFinal"));
+
+        autorComentario.setCellValueFactory(new PropertyValueFactory<Comentario, String>("autor"));
+        itemComentario.setCellValueFactory(new PropertyValueFactory<Comentario, String>("item"));
+        comentarioComentario.setCellValueFactory(new PropertyValueFactory<Comentario, String>("comentario"));
     }
 
     public void abrirVentanaDetallesItem(Item infoItem){

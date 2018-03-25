@@ -1,10 +1,7 @@
 package Gestores;
 
 
-import Modelo.ConsultasHistorial;
-import Modelo.Item;
-import Modelo.Puja;
-import Modelo.Subasta;
+import Modelo.*;
 import com.opencsv.CSVReader;
 import com.sun.org.apache.regexp.internal.RE;
 import javafx.fxml.FXMLLoader;
@@ -670,6 +667,33 @@ public class GestorBD {
 
         return tiempoFin;
 
+    }
+
+    public ArrayList<Comentario> obtenerComentariosSobreUsuario(String usuario, String modalidad){
+        ArrayList<Comentario> resultadoConsulta = new ArrayList<>();
+        try {
+            String sqlConsulta = "{call C##PRINCIPALSCHEMA.obtenerComentarios(?,?,?)}";
+            CallableStatement consulta = conexion.prepareCall(sqlConsulta);
+            consulta.setString(1, usuario);
+            consulta.setString(2, modalidad);
+            consulta.registerOutParameter(3, OracleTypes.CURSOR);
+
+            consulta.executeUpdate();
+
+            ResultSet comentariosDevueltos = (ResultSet) consulta.getObject(3);
+            while(comentariosDevueltos.next()){
+                Comentario tupla = new Comentario(
+                        comentariosDevueltos.getString("DE"),
+                        comentariosDevueltos.getString("DESCRIPCION"),
+                        comentariosDevueltos.getString("COMENTARIO")
+                );
+                resultadoConsulta.add(tupla);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return resultadoConsulta;
     }
 
     /*

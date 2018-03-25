@@ -1,10 +1,7 @@
 package Controladores;
 
 import Gestores.GestorBD;
-import Modelo.ConsultasHistorial;
-import Modelo.Item;
-import Modelo.Puja;
-import Modelo.Subasta;
+import Modelo.*;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -197,6 +194,18 @@ public class ControladorAdministrador implements Initializable{
 
     @FXML
     public Button mostrarHistorialUsuariosAdmi;
+
+    @FXML
+    public TableView comentariosUsuarios;
+
+    @FXML
+    public TableColumn autorComentario;
+
+    @FXML
+    public TableColumn itemComentario;
+
+    @FXML
+    public TableColumn comentarioComentario;
 
 
     GestorBD gestorAdministrador;
@@ -400,10 +409,14 @@ public class ControladorAdministrador implements Initializable{
                 if(opcionVentas.isSelected()){
                     ArrayList<ConsultasHistorial> consultasObtenidasSubastas = gestorAdministrador.obtenerHistorialSubastas(aliasUsuario);
                     tablaHistorialUsuarios.setItems(FXCollections.observableArrayList(consultasObtenidasSubastas));
+                    ArrayList<Comentario> comentariosObtenidos = gestorAdministrador.obtenerComentariosSobreUsuario(aliasUsuario, "Vendedor");
+                    comentariosUsuarios.setItems(FXCollections.observableArrayList(comentariosObtenidos));
                 }
                 else{
                     ArrayList<ConsultasHistorial> consultasObtenidasPujas = gestorAdministrador.obtenerHistorialPujas(aliasUsuario);
                     tablaHistorialUsuarios.setItems(FXCollections.observableArrayList(consultasObtenidasPujas));
+                    ArrayList<Comentario> comentariosObtenidos = gestorAdministrador.obtenerComentariosSobreUsuario(aliasUsuario, "Comprador");
+                    comentariosUsuarios.setItems(FXCollections.observableArrayList(comentariosObtenidos));
                 }
             }
         });
@@ -494,6 +507,10 @@ public class ControladorAdministrador implements Initializable{
         itemHistorialUsuarios.setCellValueFactory(new PropertyValueFactory<ConsultasHistorial,String>("descripcionItem"));
         precioBaseHistorialUsuarios.setCellValueFactory(new PropertyValueFactory<ConsultasHistorial,String>("precioBase"));
         precioFinalHistorialUsuarios.setCellValueFactory(new PropertyValueFactory<ConsultasHistorial,String>("precioFinal"));
+
+        autorComentario.setCellValueFactory(new PropertyValueFactory<Comentario, String>("autor"));
+        itemComentario.setCellValueFactory(new PropertyValueFactory<Comentario, String>("item"));
+        comentarioComentario.setCellValueFactory(new PropertyValueFactory<Comentario, String>("comentario"));
     }
 
     public void abrirVentanaDetallesItem(Item infoItem){

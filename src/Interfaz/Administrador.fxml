@@ -279,7 +279,7 @@
                         </AnchorPane>
                     </content>
                   </Tab>
-                  <Tab text="Consultas">
+                  <Tab text="Usuarios">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -320,6 +320,18 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Button>
+                              <Label layoutX="736.0" layoutY="19.0" text="Comentarios">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <TableView fx:id="comentariosUsuarios" layoutX="539.0" layoutY="80.0" prefHeight="379.0" prefWidth="477.0">
+                                <columns>
+                                  <TableColumn fx:id="autorComentario" prefWidth="105.0" text="Autor" />
+                                  <TableColumn fx:id="itemComentario" prefWidth="101.0" text="ítem" />
+                                    <TableColumn fx:id="comentarioComentario" prefWidth="270.0" text="Comentario" />
+                                </columns>
+                              </TableView>
                            </children>
                         </AnchorPane>
                     </content>
