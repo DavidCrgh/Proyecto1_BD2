@@ -441,6 +441,7 @@ public class GestorBD {
            pujar.setDate(4,fechaPuja);
            pujar.executeUpdate();
        }catch(SQLException e){
+           invocarAlerta("El monto ingresado debe ser mayor.");
            e.printStackTrace();
        }
     }
