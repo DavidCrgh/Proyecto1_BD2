@@ -224,17 +224,20 @@ public class ControladorAdministrador implements Initializable{
                     ||direccionRegistro.getText().equals("")||tipoUsuario.getSelectionModel().getSelectedItem() == null)
 
                 gestorAdministrador.invocarAlerta("Se deben ingresar todos los datos del nuevo usuario");
-            else{
+            else {
+                if (aliasRegistro.getText().length() > 20)
+                    gestorAdministrador.invocarAlerta("El alias debe ser menor a 20 caractéres");
+                else {
+                    String usuario = aliasRegistro.getText();
+                    String contrasenna = contrasennaRegistro.getText();
+                    String cedula = cedulaRegistro.getText();
+                    String nombreApellidos = nombreApellidosRegistro.getText();
+                    String direccion = direccionRegistro.getText();
+                    String tipoUser = tipoUsuario.getSelectionModel().getSelectedItem().toString();
 
-                String usuario = aliasRegistro.getText();
-                String contrasenna = contrasennaRegistro.getText();
-                String cedula = cedulaRegistro.getText();
-                String nombreApellidos = nombreApellidosRegistro.getText();
-                String direccion = direccionRegistro.getText();
-                String tipoUser = tipoUsuario.getSelectionModel().getSelectedItem().toString();
-
-                gestorAdministrador.agregarNuevoUsuario(usuario,contrasenna,cedula,nombreApellidos,direccion,listaTemporalTelefonos,tipoUser);
-                limpiarCamposRegistro();
+                    gestorAdministrador.agregarNuevoUsuario(usuario, contrasenna, cedula, nombreApellidos, direccion, listaTemporalTelefonos, tipoUser);
+                    limpiarCamposRegistro();
+                }
             }
         });
 

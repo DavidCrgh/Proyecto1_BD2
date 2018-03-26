@@ -282,7 +282,7 @@ public class GestorBD {
 
 
         }catch(SQLException e){
-            invocarAlerta("El telefono ingresadoya existe en la base de datos. Intente de nuevo.");
+            invocarAlerta("El telefono ingresado ya existe en la base de datos. Intente de nuevo.");
             e.printStackTrace();
         }
     }
