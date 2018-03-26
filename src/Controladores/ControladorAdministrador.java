@@ -281,7 +281,7 @@ public class ControladorAdministrador implements Initializable{
 
         actualizarModificarUsuario.setOnAction(event -> {
 
-            ArrayList<String> aliasUsuarios = gestorAdministrador.devolverUsuarios("",0);
+            ArrayList<String> aliasUsuarios = gestorAdministrador.devolverUsuarios("kjknkdas",0);
             aliasModificar.setItems(FXCollections.observableArrayList(aliasUsuarios));
         });
 
@@ -442,6 +442,7 @@ public class ControladorAdministrador implements Initializable{
 
         tipoUsuario.getItems().addAll("Administrador","Participante");
         aliasUsuarioHistorial.setItems(FXCollections.observableArrayList(aliasUsuarios));
+        aliasModificar.setItems(FXCollections.observableArrayList(aliasUsuarios));
 
     }
 
