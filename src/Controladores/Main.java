@@ -12,7 +12,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("../Interfaz/Login.fxml"));
-        primaryStage.setTitle("Login");
+        primaryStage.setTitle("Subastas en ORACLE");
         primaryStage.setScene(new Scene(root, 247, 215));
         primaryStage.show();
     }

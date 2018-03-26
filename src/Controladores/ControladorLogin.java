@@ -30,12 +30,6 @@ public class ControladorLogin implements Initializable {
     public PasswordField contraseñaAdministrador;
     @FXML
     public PasswordField contraseñaParticipante;
-    @FXML
-    public RadioButton rboton_Oracle;
-    @FXML
-    public RadioButton rboton_PostgreSQL;
-    @FXML
-    public ToggleGroup grupoBotonesBD;
 
     public GestorBD gestorBase = new GestorBD();
 
