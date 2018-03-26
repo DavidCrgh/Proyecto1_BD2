@@ -127,10 +127,13 @@ public class GestorBD {
                 return true;
             }
 
+            obtenerEntidad.close();
+            resultados.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         cerrarConexion();
         return false;
     }
@@ -174,6 +177,8 @@ public class GestorBD {
             agregarUsuario.setArray(6,arregloTelefonos);
 
             agregarUsuario.executeUpdate();
+
+            agregarUsuario.close();
         }catch(SQLException e){
             invocarAlerta("El usuario o cedula seleccionados ya han sido elegidos. Intente de nuevo.");
             e.printStackTrace();
@@ -191,6 +196,8 @@ public class GestorBD {
             modificacionUsuario.setString(4,nuevaDireccion);
 
             modificacionUsuario.executeUpdate();
+
+            modificacionUsuario.close();
         }catch(SQLException e){
             invocarAlerta("La nueva cedula ya existe. Intente de nuevo.");
             e.printStackTrace();
@@ -232,6 +239,8 @@ public class GestorBD {
 
             }
 
+            retornarUsuarios.close();
+            aliasTelefonosDevueltos.close();
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -248,7 +257,7 @@ public class GestorBD {
 
             eliminarTelefono.executeUpdate();
 
-
+            eliminarTelefono.close();
         }catch(SQLException e){
             e.printStackTrace();
 
@@ -265,6 +274,7 @@ public class GestorBD {
             modificarTelefono.setString(3,numeroTelefonoViejo);
 
             modificarTelefono.executeUpdate();
+            modificarTelefono.close();
         }catch(SQLException e){
             invocarAlerta("El nuevo telefono ya existe en la base de datos. Intente de nuevo.");
             e.printStackTrace();
@@ -279,7 +289,7 @@ public class GestorBD {
             agregarTelefono.setString(2,nuevoTelefono);
 
             agregarTelefono.executeUpdate();
-
+            agregarTelefono.close();
 
         }catch(SQLException e){
             invocarAlerta("El telefono ingresado ya existe en la base de datos. Intente de nuevo.");
@@ -298,6 +308,8 @@ public class GestorBD {
             agregarVariables.setBigDecimal(3,incrementoMinimo);
 
             agregarVariables.executeUpdate();
+
+            agregarVariables.close();
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -325,6 +337,8 @@ public class GestorBD {
 
             nuevaSubasta.executeUpdate();
 
+            nuevaSubasta.close();
+
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -346,6 +360,8 @@ public class GestorBD {
                     categorias.add(catObtenidas.getString("ID")+"-"+catObtenidas.getString("DESCRIPCION"));
             }
 
+            ejecutarCat.close();
+            catObtenidas.close();
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -394,6 +410,9 @@ public class GestorBD {
                 subastas.add(subastaAuxiliar);
             }
 
+            subastasBuenas.close();
+            subastasDevueltas.close();
+
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -422,6 +441,9 @@ public class GestorBD {
                 subastasPorCategoria.add(subastaAuxiliar);
             }
 
+            subastasBuenasPorCategoria.close();
+            subastasDevueltas.close();
+
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -437,6 +459,8 @@ public class GestorBD {
            pujar.setBigDecimal(3,ofertaComprador);
            pujar.setDate(4,fechaPuja);
            pujar.executeUpdate();
+
+           pujar.close();
        }catch(SQLException e){
            invocarAlerta("El monto ingresado debe ser mayor.");
            e.printStackTrace();
@@ -459,6 +483,8 @@ public class GestorBD {
                 idItemDevuelto = Integer.parseInt(idDevuelto.getString("IDITEM"));
             }
 
+            buscarIdItem.close();
+            idDevuelto.close();
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -487,6 +513,10 @@ public class GestorBD {
 
                 itemEncontrado = new Item(idItem,descripcionItem,detallesEntrega,nombreImagen,precioItem,tiempoInicio,tiempoFin);
             }
+
+            buscarItem.close();
+            itemDevuelto.close();
+
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -533,6 +563,10 @@ public class GestorBD {
 
                 pujas.add(new Puja(idPuja,comprador,fechaHora,montoOfrecido));
             }
+
+            ejecutarPujas.close();
+            pujasObtenidas.close();
+
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -558,6 +592,9 @@ public class GestorBD {
                 String subCategoria = subastasObtenidas.getString("DESCRIPCION");
                 subastasSinRestriccion.add(new Subasta(idSubasta,vendedor,precioBase,subCategoria));
             }
+
+            ejecutarSubastasSin.close();
+            subastasObtenidas.close();
 
         }catch (SQLException e){
             e.printStackTrace();
@@ -602,6 +639,9 @@ public class GestorBD {
 
             }
 
+            ejecutarSubastasHistorial.close();
+            tuplasSubastas.close();
+
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -631,6 +671,11 @@ public class GestorBD {
                         );
                 resultadoHistorialPujas.add(tupla);
             }
+
+            historialPujas.close();
+
+            pujasDevueltas.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -661,6 +706,9 @@ public class GestorBD {
 
             }
 
+            ejecutarTiempoFin.close();
+            tiempoObtenido.close();
+
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -689,6 +737,11 @@ public class GestorBD {
                 );
                 resultadoConsulta.add(tupla);
             }
+
+
+            consulta.close();
+            comentariosDevueltos.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
