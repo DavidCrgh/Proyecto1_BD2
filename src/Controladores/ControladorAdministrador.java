@@ -207,6 +207,9 @@ public class ControladorAdministrador implements Initializable{
     @FXML
     public TableColumn comentarioComentario;
 
+    @FXML
+    public TextField correoUsuario;
+
 
     GestorBD gestorAdministrador;
 
@@ -234,8 +237,9 @@ public class ControladorAdministrador implements Initializable{
                     String nombreApellidos = nombreApellidosRegistro.getText();
                     String direccion = direccionRegistro.getText();
                     String tipoUser = tipoUsuario.getSelectionModel().getSelectedItem().toString();
+                    String correo = correoUsuario.getText();
 
-                    gestorAdministrador.agregarNuevoUsuario(usuario, contrasenna, cedula, nombreApellidos, direccion, listaTemporalTelefonos, tipoUser);
+                    gestorAdministrador.agregarNuevoUsuario(usuario, contrasenna, cedula, nombreApellidos, direccion, listaTemporalTelefonos, tipoUser,correo);
                     limpiarCamposRegistro();
                 }
             }

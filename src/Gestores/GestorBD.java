@@ -147,7 +147,7 @@ public class GestorBD {
 
     }
 
-    public void agregarNuevoUsuario(String usuario, String contrasenna, String cedula, String nombreApellidos, String direccion,ArrayList<String> telefonos,String tipoUsuario){
+    public void agregarNuevoUsuario(String usuario, String contrasenna, String cedula, String nombreApellidos, String direccion,ArrayList<String> telefonos,String tipoUsuario,String correo){
         String [] telefonosUsuario = new String[telefonos.size()];
         telefonosUsuario = telefonos.toArray(telefonosUsuario);
 
@@ -156,10 +156,10 @@ public class GestorBD {
 
         switch(tipoUsuario){
             case "Administrador":
-                procedimientoAlmacenado = "{call C##PRINCIPALSCHEMA.crearUsuarioAdministrador (?,?,?,?,?,?)}";
+                procedimientoAlmacenado = "{call C##PRINCIPALSCHEMA.crearUsuarioAdministrador (?,?,?,?,?,?,?)}";
                 break;
             case "Participante":
-                procedimientoAlmacenado = "{call C##PRINCIPALSCHEMA.crearUsuarioParticipante (?,?,?,?,?,?)}";
+                procedimientoAlmacenado = "{call C##PRINCIPALSCHEMA.crearUsuarioParticipante (?,?,?,?,?,?,?)}";
                 break;
         }
 
@@ -175,6 +175,7 @@ public class GestorBD {
             agregarUsuario.setString(4,nombreApellidos);
             agregarUsuario.setString(5,direccion);
             agregarUsuario.setArray(6,arregloTelefonos);
+            agregarUsuario.setString(7,correo);
 
             agregarUsuario.executeUpdate();
 
